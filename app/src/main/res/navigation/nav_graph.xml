@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.kiluss.bookrate.fragment.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/myBookFragment"
+        android:name="com.kiluss.bookrate.fragment.MyBookFragment"
+        android:label="fragment_my_book"
+        tools:layout="@layout/fragment_my_book" />
+    <fragment
+        android:id="@+id/bookRequestFragment"
+        android:name="com.kiluss.bookrate.fragment.BookRequestFragment"
+        android:label="fragment_book_request"
+        tools:layout="@layout/fragment_book_request" />
+    <fragment
+        android:id="@+id/accountFollowingFragment"
+        android:name="com.kiluss.bookrate.fragment.AccountFollowingFragment"
+        android:label="fragment_account_following"
+        tools:layout="@layout/fragment_account_following" />
+    <fragment
+        android:id="@+id/personalFragment"
+        android:name="com.kiluss.bookrate.fragment.PersonalFragment"
+        android:label="fragment_personal"
+        tools:layout="@layout/fragment_personal" />
+</navigation>

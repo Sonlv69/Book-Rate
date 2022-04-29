@@ -9,7 +9,8 @@
         android:id="@+id/homeFragment"
         android:name="com.kiluss.bookrate.fragment.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+    </fragment>
     <fragment
         android:id="@+id/myBookFragment"
         android:name="com.kiluss.bookrate.fragment.MyBookFragment"

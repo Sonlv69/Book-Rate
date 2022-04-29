@@ -39,10 +39,7 @@ class HomeFragment : Fragment() {
                 1 -> tab.text = "Most Rate"
             }
         }.attach()
-
         return view
-
-
     }
 
     override fun onDestroyView() {

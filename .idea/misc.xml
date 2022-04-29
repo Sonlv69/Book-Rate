@@ -3,15 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/button_bg.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/ic_books.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/ic_following.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/ic_request.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/ic_search.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/drawable/layout_corner_bg.xml" value="0.119" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_account_following.xml" value="0.38697916666666665" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_book_request.xml" value="0.38697916666666665" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_home.xml" value="0.176" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_login.xml" value="0.23731884057971014" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_most_rate_home.xml" value="0.14375" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_my_book.xml" value="0.38697916666666665" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_personal.xml" value="0.38697916666666665" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_sign_up.xml" value="0.23731884057971014" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_trending_home.xml" value="0.14375" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_book_preview.xml" value="0.2" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/menu/bottom_nav_menu.xml" value="0.38697916666666665" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/menu/options_menu.xml" value="0.21875" />
       </map>
     </option>
   </component>

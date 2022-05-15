@@ -28,6 +28,14 @@ class MainActivity : AppCompatActivity() {
         //create bottom navigation view object
         navFragment = findNavController(R.id.navFragment)
         binding.bottomNavBar.setupWithNavController(navFragment)
+        navFragment.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.homeFragment) {
+                Log.e("change","fragment")
+                supportActionBar?.show()
+            } else {
+                supportActionBar?.hide()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -62,17 +70,16 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+
     private fun showToast(msg: String) {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {
-        val id: Int = navFragment.currentDestination!!.id
-        Log.e("fragment: ", id.toString())
-        Log.e("HomeFragment: ", R.id.homeFragment.toString())
+        val id: Int? = navFragment.currentDestination?.id
         if (id == R.id.homeFragment && !backPressPreviousState){
             backPressPreviousState = true
-            Toast.makeText(this, "Press 1 more time to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Press one more time to exit", Toast.LENGTH_SHORT).show()
             Handler().postDelayed({
                 backPressPreviousState = false
             }, 3000)

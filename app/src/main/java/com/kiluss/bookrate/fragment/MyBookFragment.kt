@@ -1,60 +1,90 @@
 package com.kiluss.bookrate.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.kiluss.bookrate.Constant.Const
 import com.kiluss.bookrate.R
+import com.kiluss.bookrate.activity.BookDetailActivity
+import com.kiluss.bookrate.adapter.BookPreviewAdapter
+import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
+import com.kiluss.bookrate.databinding.FragmentMyBookBinding
+import com.kiluss.model.BookModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyBookFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MyBookFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
+    private lateinit var bookLists: List<BookModel>
+    private var _binding: FragmentMyBookBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var bookAdapter: BookPreviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_book, container, false)
+    ): View {
+        _binding = FragmentMyBookBinding.inflate(inflater, container, false)
+
+        val recyclerView = binding.rcvMyBook
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        bookLists = listOf(
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+        )
+        bookAdapter = BookPreviewAdapter(bookLists, this.requireContext(), this)
+        recyclerView.adapter = bookAdapter
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyBookFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyBookFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onItemViewClick(pos: Int) {
+        Toast.makeText(this.requireContext(), "Go to detail page " + pos, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBookStateClick(pos: Int, view: View) {
+        showOverflowMenu(pos, view)
+    }
+
+    private fun showOverflowMenu(pos: Int, anchor: View) {
+        val menu = PopupMenu(requireContext(), anchor)
+        menu.menu.apply {
+            add("None").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "None"
+                bookAdapter.notifyItemChanged(pos)
+                true
             }
+            add("Read").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Read"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+            add("Currently Reading").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Currently Reading"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+
+            add("Want To Read").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Want To Read"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+        }
+        menu.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

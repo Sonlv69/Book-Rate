@@ -1,44 +1,83 @@
 package com.kiluss.bookrate.fragment.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
+import com.kiluss.bookrate.databinding.FragmentMostRateHomeBinding
 import com.kiluss.model.BookModel
 
+
 class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
-    private lateinit var mBookLists: List<BookModel>
+    private lateinit var bookLists: List<BookModel>
+    private var _binding: FragmentMostRateHomeBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var bookAdapter: BookPreviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_most_rate_home, container, false)
+    ): View {
+        _binding = FragmentMostRateHomeBinding.inflate(inflater, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rcvMostRateHome)
+        val recyclerView = binding.rcvMostRateHome
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        mBookLists = listOf(
-            BookModel("Fake data"), BookModel("Fake title"),
-            BookModel("Fake data"), BookModel("Fake title"),
-            BookModel("Fake data"), BookModel("Fake title"),
-            BookModel("Fake data"), BookModel("Fake title"),
-            BookModel("Fake data"), BookModel("Fake title"),
-            BookModel("Fake data"), BookModel("Fake title"),
+        bookLists = listOf(
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
         )
-        val mBookPreviewAdapter = BookPreviewAdapter(mBookLists, this.requireContext(), this)
-        recyclerView.adapter = mBookPreviewAdapter
-        return view
+        bookAdapter = BookPreviewAdapter(bookLists, this.requireContext(), this)
+        recyclerView.adapter = bookAdapter
+        return binding.root
     }
 
-    override fun onItemClick(pos: Int) {
+    override fun onItemViewClick(pos: Int) {
         Toast.makeText(this.requireContext(), "Go to detail page " + pos, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBookStateClick(pos: Int, view: View) {
+        showOverflowMenu(pos, view)
+    }
+
+    private fun showOverflowMenu(pos: Int, anchor: View) {
+        val menu = PopupMenu(requireContext(), anchor)
+        menu.menu.apply {
+            add("None").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "None"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+            add("Read").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Read"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+            add("Currently Reading").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Currently Reading"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+
+            add("Want To Read").setOnMenuItemClickListener {
+                bookLists[pos].bookState = "Want To Read"
+                bookAdapter.notifyItemChanged(pos)
+                true
+            }
+        }
+        menu.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

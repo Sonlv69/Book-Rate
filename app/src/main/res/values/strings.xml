@@ -13,4 +13,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="prompt_username_confirm">Confirm Email</string>
     <string name="prompt_password_confirm">Confirm Password</string>
+    <string name="textview_text_settings">Settings</string>
+    <string name="textview_text_signout">Signout</string>
+    <string name="sherlock_text_title">Sherlock</string>
 </resources>

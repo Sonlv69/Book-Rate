@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun performCheckLogin() {
-        if (usernameEditText.text.toString() == "k" && passwordEditText.text.toString() == "") {
+        if (usernameEditText.text.toString() == "" && passwordEditText.text.toString() == "") {
             loadingProgressBar.visibility = View.GONE
             requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
             requireActivity().finish()

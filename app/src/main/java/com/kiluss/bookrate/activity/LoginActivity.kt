@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
             super.onBackPressed()
         } else {
             backPressPreviousState = true
-            Toast.makeText(this, "Press 1 more time to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Press one more time to exit", Toast.LENGTH_SHORT).show()
             Handler().postDelayed({
                 backPressPreviousState = false
             }, 3000)

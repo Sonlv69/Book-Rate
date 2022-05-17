@@ -1,15 +1,17 @@
 package com.kiluss.bookrate.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
 import com.kiluss.bookrate.databinding.FragmentMostRateHomeBinding
-import com.kiluss.model.BookModel
+import com.kiluss.bookrate.data.model.BookModel
 
 
 class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
@@ -25,7 +27,7 @@ class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
         _binding = FragmentMostRateHomeBinding.inflate(inflater, container, false)
 
         val recyclerView = binding.rcvMostRateHome
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         bookLists = listOf(
             BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
             BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
@@ -41,7 +43,11 @@ class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
     }
 
     override fun onItemViewClick(pos: Int) {
-        Toast.makeText(this.requireContext(), "Go to detail page " + pos, Toast.LENGTH_SHORT).show()
+        val message = bookLists[pos].bookTitle
+        val intent = Intent(this.requireContext(), BookDetailActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
+        }
+        startActivity(intent)
     }
 
     override fun onBookStateClick(pos: Int, view: View) {

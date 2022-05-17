@@ -6,18 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.kiluss.bookrate.Constant.Const.Companion.EXTRA_MESSAGE
-import com.kiluss.bookrate.R
+import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
-import com.kiluss.bookrate.databinding.FragmentMostRateHomeBinding
 import com.kiluss.bookrate.databinding.FragmentTrendingHomeBinding
-import com.kiluss.model.BookModel
+import com.kiluss.bookrate.data.model.BookModel
 
 class TrendingHomeFragment : Fragment(), BookPreviewAdapterInterface {
     private lateinit var bookLists: List<BookModel>
@@ -32,7 +28,7 @@ class TrendingHomeFragment : Fragment(), BookPreviewAdapterInterface {
         _binding = FragmentTrendingHomeBinding.inflate(inflater, container, false)
 
         val recyclerView = binding.rcvTrendingHome
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         bookLists = listOf(
             BookModel("The Adventures of Sherlock Holmes", "Want to read"),
             BookModel("Fake title", "None"),

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kiluss.bookrate.databinding.ItemBookPreviewBinding
-import com.kiluss.model.BookModel
+import com.kiluss.bookrate.data.model.BookModel
 
 class BookPreviewAdapter(
     private val bookLists: List<BookModel>,

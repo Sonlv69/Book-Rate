@@ -6,18 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.kiluss.bookrate.Constant.Const
-import com.kiluss.bookrate.R
+import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.activity.BookDetailActivity
+import com.kiluss.bookrate.activity.MyBookSearchActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
 import com.kiluss.bookrate.databinding.FragmentMyBookBinding
-import com.kiluss.model.BookModel
+import com.kiluss.bookrate.data.model.BookModel
 
 class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
     private lateinit var bookLists: List<BookModel>
@@ -30,32 +27,69 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyBookBinding.inflate(inflater, container, false)
-
         val recyclerView = binding.rcvMyBook
-        recyclerView.layoutManager = GridLayoutManager(context, 3)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         bookLists = listOf(
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+
         )
         bookAdapter = BookPreviewAdapter(bookLists, this.requireContext(), this)
         recyclerView.adapter = bookAdapter
+        binding.btnSearch.setOnClickListener {
+            val intent = Intent(this.requireContext(), MyBookSearchActivity::class.java)
+            startActivity(intent)
+        }
+        binding.llBookState.setOnClickListener {
+            showOverflowMenuSearchBookState()
+        }
+        shouldShowEmptyBookString()
         return binding.root
     }
 
+    private fun shouldShowEmptyBookString() {
+        if (bookLists.isEmpty()) {
+            binding.tvEmptyBook.visibility = View.VISIBLE
+        } else {
+            binding.tvEmptyBook.visibility = View.GONE
+        }
+    }
+
     override fun onItemViewClick(pos: Int) {
-        Toast.makeText(this.requireContext(), "Go to detail page " + pos, Toast.LENGTH_SHORT).show()
+        val message = bookLists[pos].bookTitle
+        val intent = Intent(this.requireContext(), BookDetailActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
+        }
+        startActivity(intent)
     }
 
     override fun onBookStateClick(pos: Int, view: View) {
-        showOverflowMenu(pos, view)
+        showOverflowMenuItemBook(pos, view)
     }
 
-    private fun showOverflowMenu(pos: Int, anchor: View) {
+    private fun showOverflowMenuSearchBookState() {
+        val menu = PopupMenu(requireContext(), binding.llBookState)
+        menu.menu.apply {
+            add("All State").setOnMenuItemClickListener {
+                binding.tvBookState.text = "All State"
+                true
+            }
+            add("Read").setOnMenuItemClickListener {
+                binding.tvBookState.text = "Read"
+                    true
+            }
+            add("Currently Reading").setOnMenuItemClickListener {
+                binding.tvBookState.text ="Currently Reading"
+                    true
+            }
+
+            add("Want To Read").setOnMenuItemClickListener {
+                binding.tvBookState.text ="Want To Read"
+                    true
+            }
+        }
+        menu.show()
+    }
+
+    private fun showOverflowMenuItemBook(pos: Int, anchor: View) {
         val menu = PopupMenu(requireContext(), anchor)
         menu.menu.apply {
             add("None").setOnMenuItemClickListener {

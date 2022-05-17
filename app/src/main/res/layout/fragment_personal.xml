@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/contentBodyColor">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,15 +44,16 @@
                 android:layout_below="@id/usernameTextView"
                 android:layout_toEndOf="@id/profileCircleImageView"
                 android:text="Personal details"
-                android:textColor="#5D5C5C"
+                android:textColor="@color/settingMiniTitle"
                 android:textSize="16sp" />
 
             <ImageView
-                style="@style/viewParent"
                 android:id="@+id/ivButtonToPersonalPage"
+                style="@style/viewParent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_more" />
+                android:src="@drawable/ic_more"
+                app:tint="@color/settingMiniTitle" />
 
         </RelativeLayout>
 

@@ -2,7 +2,7 @@ package com.kiluss.bookrate.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.kiluss.bookrate.Constant.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.databinding.ActivityBookDetailBinding
 
 class BookDetailActivity : AppCompatActivity() {
@@ -10,8 +10,7 @@ class BookDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         val message = intent.getStringExtra(EXTRA_MESSAGE)
         binding.tvBookTitle.text = message

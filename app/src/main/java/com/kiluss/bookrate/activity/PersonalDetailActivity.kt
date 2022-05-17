@@ -11,8 +11,7 @@ class PersonalDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPersonalDetailBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
         binding.ivEdit.setOnClickListener {
             startActivity(
                 Intent(this, PersonalDetailEditActivity::class.java)

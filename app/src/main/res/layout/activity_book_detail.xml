@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4">
+    android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Saved"
+            android:text="Reviewed"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/tvEmailLabel"
             app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Comments"
+            android:text="Voted"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/textView6"
             app:layout_constraintStart_toStartOf="@+id/textView6"
@@ -146,7 +146,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:text="Float Cake Vietnam"
-            android:textColor="#091020"
+            android:textColor="@color/miniTitle"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

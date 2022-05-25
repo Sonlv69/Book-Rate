@@ -29,13 +29,10 @@ class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
         val recyclerView = binding.rcvMostRateHome
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         bookLists = listOf(
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
-            BookModel("The Adventures of Sherlock Holmes", "Want to read"), BookModel("Fake title", "None"),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read", ""), BookModel("Fake title", "None", ""),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read", ""), BookModel("Fake title", "None", ""),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read", ""), BookModel("Fake title", "None", ""),
+            BookModel("The Adventures of Sherlock Holmes", "Want to read", ""), BookModel("Fake title", "None", ""),
         )
         bookAdapter = BookPreviewAdapter(bookLists, this.requireContext(), this)
         recyclerView.adapter = bookAdapter

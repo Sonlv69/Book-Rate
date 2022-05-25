@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kiluss.bookrate.R
 import com.kiluss.bookrate.databinding.ItemBookPreviewBinding
 import com.kiluss.bookrate.data.model.BookModel
 
@@ -38,6 +39,8 @@ class BookPreviewAdapter(
             Glide
                 .with(context)
                 .load("https://cdn.animenewsnetwork.com/thumbnails/fit600x1000/cms/feature/132523/hello.jpg")
+                .override(300, 400)
+                .placeholder(R.drawable.book_cover_default)
                 .override(300, 400)
                 .into(binding.ivBookPreview)
             binding.root.setOnClickListener {

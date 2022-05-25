@@ -74,12 +74,12 @@ class SignUpFragment : Fragment() {
                     edtUsername.text.clear()
                     edtPassword.text.clear()
                     edtPasswordConfirm.text.clear()
-                    Toast.makeText(context, "Register successfully!", Toast.LENGTH_SHORT).show()
+                    showToast("Register successfully!")
                     navigateToLoginFragment()
                     Log.e("onResponse: ", registerResponse.toString())
                 } else {
                     loadingProgressBar.visibility = View.GONE
-                    showSignUpFailed(response.body().toString())
+                    showToast(response.body().toString())
                 }
             }
 
@@ -94,9 +94,9 @@ class SignUpFragment : Fragment() {
         (activity as LoginActivity).viewPager.currentItem = 0
     }
 
-    private fun showSignUpFailed(errorString: String) {
+    private fun showToast(string: String) {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+        Toast.makeText(appContext, string, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

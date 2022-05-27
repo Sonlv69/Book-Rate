@@ -20,6 +20,8 @@ import com.kiluss.bookrate.data.model.RegisterResponse
 import com.kiluss.bookrate.databinding.FragmentSignUpBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,14 +47,12 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        signupApi = RetrofitClient.getClient().create(BookService::class.java)
+        signupApi = RetrofitClient.getInstance(requireContext()).getClientUnAuthorize().create(BookService::class.java)
         edtUsername = binding.edtUsername
         edtPassword = binding.edtPassword
         edtPasswordConfirm = binding.edtPasswordConfirm
         signupButton = binding.btnSignUp
         loadingProgressBar = binding.loading
-
-
         signupButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
             performSignUp()
@@ -63,32 +63,44 @@ class SignUpFragment : Fragment() {
         val username = edtUsername.text.toString()
         val password = edtPassword.text.toString()
         val passwordConfirm = edtPasswordConfirm.text.toString()
-        signupApi.register(username, password, passwordConfirm).enqueue(object : Callback<RegisterResponse?> {
-            override fun onResponse(
-                call: Call<RegisterResponse?>,
-                response: Response<RegisterResponse?>
-            ) {
-                if (response.isSuccessful) {
-                    val registerResponse = response.body()
-                    loadingProgressBar.visibility = View.GONE
-                    edtUsername.text.clear()
-                    edtPassword.text.clear()
-                    edtPasswordConfirm.text.clear()
-                    showToast("Register successfully!")
-                    navigateToLoginFragment()
-                    Log.e("onResponse: ", registerResponse.toString())
-                } else {
-                    loadingProgressBar.visibility = View.GONE
-                    showToast(response.body().toString())
-                }
-            }
+        if (password != "" && username !="" &&passwordConfirm != "") {
+            if (password == passwordConfirm) {
+                signupApi.register(createJsonRequestBody(
+                    "username" to username, "password" to password)).enqueue(object : Callback<RegisterResponse?> {
+                    override fun onResponse(
+                        call: Call<RegisterResponse?>,
+                        response: Response<RegisterResponse?>
+                    ) {
+                        if (response.isSuccessful) {
+                            val registerResponse = response.body()
+                            loadingProgressBar.visibility = View.GONE
+                            edtUsername.text.clear()
+                            edtPassword.text.clear()
+                            edtPasswordConfirm.text.clear()
+                            showToast("Register successfully!")
+                            navigateToLoginFragment()
+                            Log.e("onResponse: ", registerResponse.toString())
+                        } else {
+                            loadingProgressBar.visibility = View.GONE
+                            showToast(response.body().toString())
+                        }
+                    }
 
-            override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
-                loadingProgressBar.visibility = View.GONE
-                Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
+                    override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
+                        loadingProgressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
+                    }
+                })
             }
-        })
+        } else {
+            Toast.makeText(requireContext(), "Please fill all field", Toast.LENGTH_LONG).show()
+        }
     }
+
+    private fun createJsonRequestBody(vararg params : Pair<String, Any>) =
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            JSONObject(mapOf(*params)).toString())
 
     private fun navigateToLoginFragment() {
         (activity as LoginActivity).viewPager.currentItem = 0

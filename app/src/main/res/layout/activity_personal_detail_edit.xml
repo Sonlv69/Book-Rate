@@ -1,219 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/header_cover_image"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
-            android:src="@drawable/login_background" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-130dp"
-            android:clickable="true"
-            android:elevation="5dp"
-            android:focusable="true"
-            android:padding="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/user_dp"
-            app:civ_border_color="#FFFFFFFF"
-            app:civ_border_width="3dp">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
-        <ImageView
-            android:id="@+id/ivActiveState"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_below="@+id/header_cover_image"
-            android:layout_marginStart="-58dp"
-            android:layout_marginTop="20dp"
-            android:layout_toEndOf="@+id/profile"
-            android:elevation="5dp"
-            android:src="@drawable/ic_circle"
-            app:tint="@color/green" />
-
+        android:layout_height="match_parent"
+        android:id="@+id/svMain">
         <RelativeLayout
-            android:id="@+id/profile_layout"
+            android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header_cover_image"
-            android:background="@color/colorPrimaryDarker"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btnSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:text="save" />
+            <ImageView
+                android:id="@+id/header_cover_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:src="@drawable/login_background" />
 
-            <EditText
-                android:id="@+id/edtDisplayName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/header_cover_image"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="70dp"
-                android:text="Le Van Son"
-                android:textColor="#fff"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="-130dp"
+                android:clickable="true"
+                android:elevation="5dp"
+                android:focusable="true"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_dp"
+                app:civ_border_color="#FFFFFFFF"
+                app:civ_border_width="3dp">
 
+            </de.hdodenhof.circleimageview.CircleImageView>
 
-            <EditText
-                android:id="@+id/edtDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/edtDisplayName"
-                android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="10dp"
-                android:text="&quot;Những người hay nói đạo lý thường sống rất đẹp&quot; - Anh-xtanh"
-                android:textColor="#fff"
-                android:textSize="16sp" />
-        </RelativeLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_layout"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorBackground"
-            android:elevation="4dp"
-            android:orientation="vertical"
-            android:paddingLeft="5dp"
-            android:paddingTop="20dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="20dp">
-
-            <TextView
-                android:id="@+id/tvNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Full name: "
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/edtFullName"
+            <RelativeLayout
+                android:id="@+id/profile_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="text"
-                android:text="Le Van Son"
-                app:layout_constraintLeft_toRightOf="@+id/tvNameLabel"
-                app:layout_constraintStart_toStartOf="@+id/tvNameLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameLabel" />
+                android:layout_below="@+id/header_cover_image"
+                android:background="@color/colorPrimaryDarker"
+                android:elevation="4dp"
+                android:paddingBottom="24dp">
 
-            <TextView
-                android:id="@+id/tvEmailLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Email: "
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtFullName" />
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="save" />
 
-            <EditText
-                android:id="@+id/edtEmail"
+                <TextView
+                    android:id="@+id/edtDisplayName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="70dp"
+                    android:text="Le Van Son"
+                    android:textColor="#fff"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/edtDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edtDisplayName"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="10dp"
+                    android:text="&quot;Những người hay nói đạo lý thường sống rất đẹp&quot; - Anh-xtanh"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="kiluss2@gmail.com"
-                app:layout_constraintLeft_toRightOf="@+id/tvEmailLabel"
-                app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
-
-            <TextView
-                android:id="@+id/tvGenderLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Gender: "
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
-
-            <EditText
-                android:id="@+id/edtGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginTop="9dp"
-                android:text="Male"
-                app:layout_constraintLeft_toRightOf="@+id/tvGenderLabel"
-                app:layout_constraintStart_toStartOf="@+id/tvGenderLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tvGenderLabel" />
-
-            <TextView
-                android:id="@+id/tvBirthDayLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_below="@+id/profile_layout"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Birth Day: "
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtGender" />
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorBackground"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="20dp">
 
-            <EditText
-                android:id="@+id/edtBirthDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="22/02/2000"
-                app:layout_constraintLeft_toRightOf="@+id/tvBirthDayLabel"
-                app:layout_constraintStart_toStartOf="@+id/tvBirthDayLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tvBirthDayLabel" />
+                <TextView
+                    android:id="@+id/tvNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Full name: "
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvAddressLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginTop="8dp"
-                android:text="Address: "
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtBirthDay" />
+                <EditText
+                    android:id="@+id/edtFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:inputType="text"
+                    android:text="Not set"
+                    app:layout_constraintLeft_toRightOf="@+id/tvNameLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvNameLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameLabel" />
 
-            <EditText
-                android:id="@+id/edtAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Lien Chieu, Da Nang"
-                app:layout_constraintLeft_toRightOf="@+id/tvAddressLabel"
-                app:layout_constraintStart_toStartOf="@+id/tvAddressLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tvAddressLabel" />
+                <TextView
+                    android:id="@+id/tvEmailLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Email: "
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtFullName" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </RelativeLayout>
-</ScrollView>
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="kiluss2@gmail.com"
+                    app:layout_constraintLeft_toRightOf="@+id/tvEmailLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
+
+                <TextView
+                    android:id="@+id/tvGenderLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Gender: "
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+                <EditText
+                    android:id="@+id/edtGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="9dp"
+                    android:text="Male"
+                    app:layout_constraintLeft_toRightOf="@+id/tvGenderLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvGenderLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGenderLabel" />
+
+                <TextView
+                    android:id="@+id/tvBirthDayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Birth Day: "
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtGender" />
+
+                <TextView
+                    android:id="@+id/tvBirthDayPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingStart="5dp"
+                    android:text="Not set"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@+id/tvBirthDayLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvBirthDayLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBirthDayLabel" />
+
+                <TextView
+                    android:id="@+id/tvAddressLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Address: "
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBirthDayPicker" />
+
+                <EditText
+                    android:id="@+id/edtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Not set"
+                    app:layout_constraintLeft_toRightOf="@+id/tvAddressLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvAddressLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddressLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pbChangeLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

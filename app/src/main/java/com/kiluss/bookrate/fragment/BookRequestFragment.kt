@@ -1,8 +1,9 @@
 package com.kiluss.bookrate.fragment
 
-import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -29,6 +30,8 @@ import com.kiluss.bookrate.adapter.CategoryRequestAdapter
 import com.kiluss.bookrate.databinding.FragmentBookRequestBinding
 import com.kiluss.bookrate.utils.URIPathHelper
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BookRequestFragment : Fragment(), CategoryRequestAdapter.CategoryRequestAdapterInterface {
@@ -63,9 +66,7 @@ class BookRequestFragment : Fragment(), CategoryRequestAdapter.CategoryRequestAd
         }
 
     private val requestManageStoragePermission =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { isGranted ->
-
-        }
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,6 +83,14 @@ class BookRequestFragment : Fragment(), CategoryRequestAdapter.CategoryRequestAd
 
         binding.llCategory.setOnClickListener {
             showOverflowMenuCategory(binding.llCategory, listCategoryDefine)
+        }
+        val dateSetListener =
+            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val month = monthOfYear + 1
+                binding.tvPublishDate.text = "$dayOfMonth/$month/$year"
+            }
+        binding.llPublishDate.setOnClickListener {
+            setUpDatePicker(dateSetListener)
         }
         binding.llCover.setOnClickListener {
             val pickIntent = Intent(Intent.ACTION_PICK)
@@ -111,12 +120,23 @@ class BookRequestFragment : Fragment(), CategoryRequestAdapter.CategoryRequestAd
                 ) {
                     pickImageFromGalleryForResult.launch(pickIntent)
                 } else {
-                    requestReadPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    requestReadPermission.launch(READ_EXTERNAL_STORAGE)
                 }
             }
         }
 
         return binding.root
+    }
+
+    private fun setUpDatePicker(dateSetListener: OnDateSetListener?) {
+        var year = Calendar.getInstance().get(Calendar.YEAR)
+        var month = Calendar.getInstance().get(Calendar.MONTH)
+        var day = Calendar.getInstance().get(Calendar.DATE)
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            dateSetListener, year, month, day
+        )
+        datePickerDialog.show()
     }
 
     private fun showOverflowMenuCategory(anchor: View, listCate: ArrayList<String>) {

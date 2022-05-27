@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.activity.MainActivity
 import com.kiluss.bookrate.data.model.LoginResponse
@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val sharedPref = requireActivity().getSharedPreferences(
-            requireActivity().getString(R.string.saved_access_token_key),
+            requireActivity().getString(R.string.saved_login_account_key),
             Context.MODE_PRIVATE
         )
         isLogin =
@@ -73,8 +73,7 @@ class LoginFragment : Fragment() {
         passwordEditText = binding.password
         val loginButton = binding.btnSignIn
         loadingProgressBar = binding.loading
-        loginApi = RetrofitClient.getClient().create(BookService::class.java)
-
+        loginApi = RetrofitClient.getInstance(requireContext()).getClientUnAuthorize().create(BookService::class.java)
 
         loginButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
@@ -85,57 +84,63 @@ class LoginFragment : Fragment() {
     private fun performCheckLogin() {
         val username = usernameEditText.text.toString()
         val password = passwordEditText.text.toString()
-        loginApi.login(createJsonRequestBody(
-            "username" to username, "password" to password)).enqueue(object : Callback<String?> {
-            override fun onResponse(
-                call: Call<String?>,
-                response: Response<String?>
-            ) {
-                when {
-                    response.code() == 404 -> {
-                        Toast.makeText(requireContext(), "Url is not exist", Toast.LENGTH_SHORT).show()
-                    }
-                    response.isSuccessful -> {
-                        val loginResponse = response.body()
-                        loginResponse?.let {
-                            saveLoginInfo(loginResponse)
+        if (username != "" && password != "") {
+            loginApi.login(createJsonRequestBody(
+                "username" to username, "password" to password)).enqueue(object : Callback<LoginResponse?> {
+                override fun onResponse(
+                    call: Call<LoginResponse?>,
+                    response: Response<LoginResponse?>
+                ) {
+                    when {
+                        response.code() == 404 -> {
+                            Toast.makeText(requireContext(), "Url is not exist", Toast.LENGTH_SHORT).show()
                         }
-                        loadingProgressBar.visibility = View.GONE
-                        requireActivity().startActivity(
-                            Intent(
-                                requireActivity(),
-                                MainActivity::class.java
+                        response.code() == 204 -> {
+                            Toast.makeText(requireContext(), "Username or password incorrect", Toast.LENGTH_SHORT).show()
+                        }
+                        response.isSuccessful -> {
+                            val loginResponse = response.body()
+                            loginResponse?.let {
+                                saveLoginInfo(it)
+                            }
+                            loadingProgressBar.visibility = View.GONE
+                            requireActivity().startActivity(
+                                Intent(
+                                    requireActivity(),
+                                    MainActivity::class.java
+                                )
                             )
-                        )
-                        requireActivity().finish()
+                            requireActivity().finish()
+                        }
                     }
-                    else -> {
-                        showToastError(response)
-                    }
+                    loadingProgressBar.visibility = View.GONE
                 }
-                loadingProgressBar.visibility = View.GONE
-            }
 
-            override fun onFailure(call: Call<String?>, t: Throwable) {
-                loadingProgressBar.visibility = View.GONE
-                t.printStackTrace()
-                Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onFailure(call: Call<LoginResponse?>, t: Throwable) {
+                    loadingProgressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
+                }
+            })
+        } else {
+            Toast.makeText(requireContext(), "Please fill all field", Toast.LENGTH_LONG).show()
+            binding.loading.visibility = View.GONE
+        }
     }
 
-    private fun saveLoginInfo(token: String) {
+    private fun saveLoginInfo(loginObject: LoginResponse) {
         val pref: SharedPreferences =
             requireContext().getSharedPreferences(
                 requireContext().getString(
-                    R.string.saved_access_token_key
+                    R.string.saved_login_account_key
                 ),
                 Context.MODE_PRIVATE
             )
         val editor: SharedPreferences.Editor = pref.edit()
+        val gson = Gson()
+        val json = gson.toJson(loginObject)
         editor.putString(
-            requireContext().getString(R.string.saved_access_token_key),
-            token
+            requireContext().getString(R.string.saved_login_account_key),
+            json
         ).apply()
         editor.putBoolean(
             requireContext().getString(R.string.is_sign_in_key),

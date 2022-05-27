@@ -104,13 +104,13 @@ class PersonalFragment : Fragment() {
         val pref: SharedPreferences =
             requireContext().getSharedPreferences(
                 requireContext().getString(
-                    R.string.saved_access_token_key
+                    R.string.saved_login_account_key
                 ),
                 MODE_PRIVATE
             )
         val editor: SharedPreferences.Editor = pref.edit()
         editor.putString(
-            requireContext().getString(R.string.saved_access_token_key),
+            requireContext().getString(R.string.saved_login_account_key),
             ""
         ).apply()
         editor.putBoolean(

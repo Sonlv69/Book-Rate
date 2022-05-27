@@ -32,7 +32,6 @@ interface BookService {
         @Body params: RequestBody
     ): Call<MyAccountInfo>
 
-    @FormUrlEncoded
     @PUT("Account/password/{id}")
     fun changePassword(
         @Path("id") id: String,

@@ -5,8 +5,10 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/svMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
@@ -21,7 +23,7 @@
                 android:src="@drawable/login_background" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile"
+                android:id="@+id/ivProfile"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_below="@+id/header_cover_image"
@@ -45,7 +47,7 @@
                 android:layout_below="@+id/header_cover_image"
                 android:layout_marginStart="-58dp"
                 android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/profile"
+                android:layout_toEndOf="@+id/ivProfile"
                 android:elevation="5dp"
                 android:src="@drawable/ic_circle"
                 app:tint="@color/green" />
@@ -58,18 +60,6 @@
                 android:background="@color/colorPrimaryDarker"
                 android:elevation="4dp"
                 android:paddingBottom="24dp">
-
-                <ImageView
-                    android:id="@+id/ivEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@android:drawable/ic_menu_edit" />
 
                 <TextView
                     android:id="@+id/edtDisplayName"
@@ -150,13 +140,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/edtFullName"
+                    android:id="@+id/tvFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Le Van Son"
+                    android:text="Not set"
                     app:layout_constraintLeft_toRightOf="@+id/tvNameLabel"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -173,7 +163,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvNameLabel" />
 
                 <TextView
-                    android:id="@+id/edtEmail"
+                    android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -196,7 +186,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
 
                 <TextView
-                    android:id="@+id/edtGender"
+                    android:id="@+id/tvGender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -219,15 +209,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvGenderLabel" />
 
                 <TextView
-                    android:id="@+id/edtBirthDay"
+                    android:id="@+id/tvBirthDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
-                    android:text="22/02/2000"
+                    android:text="Not set"
                     app:layout_constraintLeft_toRightOf="@+id/tvBirthDayLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/edtGender" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvGender" />
 
                 <TextView
                     android:id="@+id/tvAddressLabel"
@@ -242,20 +232,31 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvBirthDayLabel" />
 
                 <TextView
-                    android:id="@+id/edtAddress"
+                    android:id="@+id/tvAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
-                    android:text="Lien Chieu, Da Nang"
+                    android:text="Not set"
                     app:layout_constraintLeft_toRightOf="@+id/tvAddressLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/edtBirthDay" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvBirthDay" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
     </ScrollView>
+
     <FrameLayout
         android:id="@+id/root_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.activity.ChangePasswordActivity
 import com.kiluss.bookrate.activity.LoginActivity
@@ -17,11 +18,13 @@ import com.kiluss.bookrate.activity.PersonalDetailActivity
 import com.kiluss.bookrate.activity.PersonalDetailEditActivity
 import com.kiluss.bookrate.databinding.FragmentPersonalBinding
 import com.kiluss.bookrate.utils.Const.Companion.NIGHT_MODE
+import com.kiluss.bookrate.viewmodel.MainActivityViewModel
 
 
 class PersonalFragment : Fragment() {
     private var _binding: FragmentPersonalBinding? = null
     private val binding get() = _binding!!
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,21 @@ class PersonalFragment : Fragment() {
         _binding = FragmentPersonalBinding.inflate(inflater, container, false)
         val sharedPreferences = requireContext().getSharedPreferences(NIGHT_MODE, MODE_PRIVATE)
         binding.darkModeSwitch.isChecked = sharedPreferences.getBoolean(NIGHT_MODE, false)
+        val account = activityViewModel.accountInfo.value
+        if (account != null) {
+            binding.profileCircleImageView.setImageBitmap(account.picture?.let {
+                activityViewModel.base64ToBitmapDecode(
+                    it
+                )
+            })
+        }
+        activityViewModel.accountInfo.observe(requireActivity()) {
+            binding.profileCircleImageView.setImageBitmap(
+                activityViewModel.base64ToBitmapDecode(
+                    activityViewModel.accountInfo.value?.picture.toString()
+                )
+            )
+        }
         binding.rlPersonalDetail.setOnClickListener {
             requireActivity().startActivity(
                 Intent(

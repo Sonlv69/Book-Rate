@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Role(
+data class MyFollowers(
     @SerializedName("id") var id: Int? = null,
-    @SerializedName("nameRole") var nameRole: String? = null,
-    @SerializedName("accounts") var accounts: ArrayList<String>? = arrayListOf()
+    @SerializedName("iD_Following") var iDFollowing: Int? = null,
+    @SerializedName("iD_Follower") var iDFollower: Int? = null
 ) : Parcelable

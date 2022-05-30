@@ -6,8 +6,8 @@
     android:layout_margin="4dp"
     android:background="@color/black"
     android:elevation="5dp"
-    app:cardCornerRadius="10dp"
-    android:gravity="center">
+    android:gravity="center"
+    app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/user_dp"
+            android:src="@drawable/user_df_avatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,38 +56,30 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
+            android:id="@+id/llLike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/llLike"
             app:layout_constraintStart_toStartOf="@id/llComment"
             app:layout_constraintTop_toBottomOf="@+id/llComment">
 
             <TextView
-                android:id="@+id/tvLikeNumber"
+                android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="24"
-                android:textColor="#304FFE"
-                android:textStyle="bold"
-                app:tint="@color/gray" />
-
-            <ImageView
-                android:id="@+id/ivLikeOff"
+                android:layout_marginStart="8dp"
+                android:text="Time"
+                android:layout_marginEnd="4dp"
+                android:textStyle="italic"
+                android:textSize="16sp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@id/llComment"
+                app:layout_constraintTop_toBottomOf="@+id/llComment" />
+            <RatingBar
+                android:id="@+id/rbReview"
+                style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:src="@drawable/ic_thumb_up_off"
-                android:visibility="gone"
-                app:tint="@color/gray" />
-
-            <ImageView
-                android:id="@+id/ivLikeOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:src="@drawable/ic_thumb_up_on"
-                app:tint="#304FFE" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tvReplyLabel"
@@ -95,50 +87,69 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Reply"
-                android:textColor="#304FFE" />
+                android:textSize="16sp"
+                android:textColor="@color/colorBlueText"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llReply"
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/llComment"
-            app:layout_constraintTop_toBottomOf="@id/llLike" >
+            app:layout_constraintTop_toBottomOf="@id/llLike">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivReplyAvatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/user_dp"
+                android:src="@drawable/user_df_avatar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/edtReply"
-                android:inputType="text"
-                android:hint="Write your reply"
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="4dp"/>
-            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:hint="Write your reply"
+                android:inputType="text" />
+
+            <ImageView
                 android:id="@+id/ivSendReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="8dp"
                 android:src="@drawable/ic_send"
-                app:tint="@color/colorPrimaryDarker"
-                android:layout_gravity="center"/>
+                app:tint="@color/colorPrimaryDarker" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/tvShowReply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Show reply"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlueText"
+            android:textStyle="bold"
+            android:paddingVertical="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/llComment"
+            app:layout_constraintTop_toBottomOf="@id/llReply" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvReply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/llComment"
-            app:layout_constraintTop_toBottomOf="@id/llReply" />
+            app:layout_constraintTop_toBottomOf="@id/tvShowReply" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

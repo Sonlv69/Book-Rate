@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MyAccountInfo(
+data class Account(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("userName") var userName: String? = null,
     @SerializedName("password") var password: String? = null,
@@ -15,10 +15,10 @@ data class MyAccountInfo(
     @SerializedName("address") var address: String? = null,
     @SerializedName("picture") var picture: String? = null,
     @SerializedName("iD_Role") var iDRole: Int? = null,
-    @SerializedName("role") var role: Role = Role(),
-    @SerializedName("myFollowings") var myFollowings: ArrayList<String> = arrayListOf(),
-    @SerializedName("myFollowers") var myFollowers: ArrayList<String> = arrayListOf(),
-    @SerializedName("myBooks") var myBooks: ArrayList<String> = arrayListOf(),
-    @SerializedName("reviews") var reviews: ArrayList<String> = arrayListOf(),
-    @SerializedName("proposes") var proposes: ArrayList<String> = arrayListOf()
+    @SerializedName("role") var role: Role? = Role(),
+    @SerializedName("myFollowings") var myFollowings: ArrayList<MyFollowings>? = arrayListOf(),
+    @SerializedName("myFollowers") var myFollowers: ArrayList<MyFollowers>? = arrayListOf(),
+    @SerializedName("myBooks") var myBooks: ArrayList<MyBook>? = arrayListOf(),
+    @SerializedName("reviews") var reviews: ArrayList<Reviews>? = arrayListOf(),
+    @SerializedName("proposes") var proposes: ArrayList<Proposes>? = arrayListOf()
 ) : Parcelable

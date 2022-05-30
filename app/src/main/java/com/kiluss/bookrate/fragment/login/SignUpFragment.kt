@@ -1,7 +1,5 @@
 package com.kiluss.bookrate.fragment.login
 
-import android.R
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,11 +10,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.kiluss.bookrate.activity.LoginActivity
-import com.kiluss.bookrate.activity.MainActivity
-import com.kiluss.bookrate.data.model.RegisterResponse
+import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.databinding.FragmentSignUpBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
@@ -66,10 +61,10 @@ class SignUpFragment : Fragment() {
         if (password != "" && username !="" &&passwordConfirm != "") {
             if (password == passwordConfirm) {
                 signupApi.register(createJsonRequestBody(
-                    "username" to username, "password" to password)).enqueue(object : Callback<RegisterResponse?> {
+                    "username" to username, "password" to password)).enqueue(object : Callback<Account?> {
                     override fun onResponse(
-                        call: Call<RegisterResponse?>,
-                        response: Response<RegisterResponse?>
+                        call: Call<Account?>,
+                        response: Response<Account?>
                     ) {
                         if (response.isSuccessful) {
                             val registerResponse = response.body()
@@ -86,7 +81,7 @@ class SignUpFragment : Fragment() {
                         }
                     }
 
-                    override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
+                    override fun onFailure(call: Call<Account?>, t: Throwable) {
                         loadingProgressBar.visibility = View.GONE
                         Toast.makeText(requireContext(), t.message, Toast.LENGTH_LONG).show()
                     }

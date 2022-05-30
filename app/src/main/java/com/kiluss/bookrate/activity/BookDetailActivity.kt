@@ -119,6 +119,14 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         binding.tvAuthor.setOnClickListener {
             val intent = Intent(this, AuthorProfileActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, book.iDAut)
+                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }
+            startActivity(intent)
+        }
+        binding.tvPublisher.setOnClickListener {
+            val intent = Intent(this, PublisherProfileActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, book.iDPub)
+                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             }
             startActivity(intent)
         }

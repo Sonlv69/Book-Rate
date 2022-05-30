@@ -12,5 +12,5 @@ data class Publisher(
     @SerializedName("telephone") var telephone: Int? = null,
     @SerializedName("email") var email: String? = null,
     @SerializedName("website") var website: String? = null,
-    @SerializedName("books") var books: ArrayList<String>? = arrayListOf()
+    @SerializedName("books") var books: ArrayList<BookModel>? = arrayListOf()
 ) : Parcelable

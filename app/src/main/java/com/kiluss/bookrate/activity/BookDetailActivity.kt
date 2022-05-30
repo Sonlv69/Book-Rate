@@ -123,6 +123,13 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
             }
             startActivity(intent)
         }
+        binding.tvPublisher.setOnClickListener {
+            val intent = Intent(this, PublisherProfileActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, book.iDPub)
+                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }
+            startActivity(intent)
+        }
         book.reviews?.let {
             listReviews = book.reviews!!
             reviewAdapter = ReviewAdapter(this, listReviews, this)

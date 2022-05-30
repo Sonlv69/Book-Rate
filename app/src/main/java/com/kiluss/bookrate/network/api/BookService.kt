@@ -59,4 +59,9 @@ interface BookService {
         @Path("id") id: Int
     ): Call<Author>
 
+    @GET("Publisher/{id}")
+    fun getPublisherInfo(
+        @Path("id") id: Int
+    ): Call<Publisher>
+
 }

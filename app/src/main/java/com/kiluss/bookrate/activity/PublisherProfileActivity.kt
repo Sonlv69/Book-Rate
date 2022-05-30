@@ -8,46 +8,44 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
-import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.data.model.Author
 import com.kiluss.bookrate.data.model.BookModel
 import com.kiluss.bookrate.data.model.LoginResponse
+import com.kiluss.bookrate.data.model.Publisher
 import com.kiluss.bookrate.databinding.ActivityAuthorProfileBinding
-import com.kiluss.bookrate.databinding.ActivityBookDetailBinding
+import com.kiluss.bookrate.databinding.ActivityPublisherProfileBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Const
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.MessageFormat
 
-class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
-    private lateinit var binding: ActivityAuthorProfileBinding
+class PublisherProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
+    private lateinit var binding: ActivityPublisherProfileBinding
     private lateinit var api: BookService
-    private lateinit var author: Author
+    private lateinit var publisher: Publisher
     private lateinit var bookLists: ArrayList<BookModel>
     private lateinit var bookAdapter: BookPreviewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAuthorProfileBinding.inflate(layoutInflater)
+        binding = ActivityPublisherProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val idAuthor = intent.getIntExtra(EXTRA_MESSAGE, 0)
+        val idPublisher = intent.getIntExtra(Const.EXTRA_MESSAGE, 0)
         val loginResponse = getLoginResponse(this)
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
-        getAuthorInfo(idAuthor)
+        getPublisherInfo(idPublisher)
     }
 
-    private fun getAuthorInfo(id: Int) {
-        api.getAuthorInfo(id).enqueue(object : Callback<Author?> {
-            override fun onResponse(call: Call<Author?>, response: Response<Author?>) {
+    private fun getPublisherInfo(id: Int) {
+        api.getPublisherInfo(id).enqueue(object : Callback<Publisher?> {
+            override fun onResponse(call: Call<Publisher?>, response: Response<Publisher?>) {
                 when {
                     response.code() == 404 -> {
                         Toast.makeText(
@@ -64,34 +62,35 @@ class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
                         ).show()
                     }
                     response.isSuccessful -> {
-                        author = response.body()!!
-                        Log.e("TAG", "onResponse: " + author.toString())
-                        updateUi(author)
+                        publisher = response.body()!!
+                        Log.e("TAG", "onResponse: " + publisher.toString())
+                        updateUi(publisher)
                     }
                 }
             }
 
-            override fun onFailure(call: Call<Author?>, t: Throwable) {
+            override fun onFailure(call: Call<Publisher?>, t: Throwable) {
                 Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
             }
         })
     }
 
-    private fun updateUi(info: Author) {
+    private fun updateUi(info: Publisher) {
         info.name?.let { binding.tvDisplayName.text = it }
-        info.stageName?.let { binding.tvStageName.text = it }
-        info.birthday?.let { binding.tvBirthDay.text = convertDateTime(it) }
-        bookLists = if (author.books != null) {
-            author.books!!
+        info.email?.let { binding.tvEmail.text = it }
+        info.address?.let { binding.tvAddress.text = it }
+        info.website?.let { binding.tvWebsite.text = it }
+        info.telephone?.let { binding.tvTelephone.text = it.toString() }
+        bookLists = if (publisher.books != null) {
+            publisher.books!!
         } else {
             arrayListOf()
         }
-        info.description?.let { binding.tvDescription.text = it }
         setUpAdapter()
     }
 
     private fun setUpAdapter() {
-        val recyclerView = binding.rcvAuthorBook
+        val recyclerView = binding.rcvPublisherBook
         val glm = GridLayoutManager(this, 2)
         recyclerView.layoutManager = glm
         bookAdapter = BookPreviewAdapter(bookLists, this, this)
@@ -106,7 +105,7 @@ class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
 
     override fun onItemViewClick(pos: Int) {
         val intent = Intent(this, BookDetailActivity::class.java).apply {
-            putExtra(EXTRA_MESSAGE, bookLists[pos].id)
+            putExtra(Const.EXTRA_MESSAGE, bookLists[pos].id)
             addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         }
         startActivity(intent)
@@ -142,10 +141,6 @@ class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
             }
         }
         menu.show()
-    }
-
-    private fun convertDateTime(jsonDate: String): String {
-        return jsonDate.split("T")[0]
     }
 
     private fun getLoginResponse(context: Context): LoginResponse {

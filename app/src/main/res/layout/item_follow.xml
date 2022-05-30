@@ -10,7 +10,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginHorizontal="10dp"
-        android:src="@drawable/user_dp"
+        android:src="@drawable/user_df_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

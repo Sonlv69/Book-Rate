@@ -59,7 +59,7 @@
                     android:text="save" />
 
                 <TextView
-                    android:id="@+id/edtDisplayName"
+                    android:id="@+id/tvDisplayName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -74,7 +74,7 @@
                     android:id="@+id/edtDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/edtDisplayName"
+                    android:layout_below="@+id/tvDisplayName"
                     android:layout_centerHorizontal="true"
                     android:layout_marginHorizontal="40dp"
                     android:layout_marginTop="10dp"
@@ -101,7 +101,7 @@
                 android:paddingBottom="20dp">
 
                 <TextView
-                    android:id="@+id/tvNameLabel"
+                    android:id="@+id/tvStageNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -119,12 +119,12 @@
                     android:layout_margin="5dp"
                     android:inputType="text"
                     android:text="Not set"
-                    app:layout_constraintLeft_toRightOf="@+id/tvNameLabel"
-                    app:layout_constraintStart_toStartOf="@+id/tvNameLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/tvNameLabel" />
+                    app:layout_constraintLeft_toRightOf="@+id/tvStageNameLabel"
+                    app:layout_constraintStart_toStartOf="@+id/tvStageNameLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/tvStageNameLabel" />
 
                 <TextView
-                    android:id="@+id/tvEmailLabel"
+                    android:id="@+id/tvReviewed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -139,9 +139,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="kiluss2@gmail.com"
-                    app:layout_constraintLeft_toRightOf="@+id/tvEmailLabel"
-                    app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
+                    app:layout_constraintLeft_toRightOf="@+id/tvReviewed"
+                    app:layout_constraintStart_toStartOf="@+id/tvReviewed"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReviewed" />
 
                 <TextView
                     android:id="@+id/tvGenderLabel"

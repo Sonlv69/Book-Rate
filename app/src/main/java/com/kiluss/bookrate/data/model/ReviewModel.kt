@@ -1,10 +1,10 @@
 package com.kiluss.bookrate.data.model
 
-data class CommentModel(
+data class ReviewModel(
     val avatarUrl: String,
     val commentName: String,
     val comment: String,
     var likeNumber: Int,
     var likeState: Boolean,
-    val reply: List<CommentModel>
+    val reply: List<ReviewModel>
 )

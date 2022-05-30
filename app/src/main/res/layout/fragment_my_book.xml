@@ -34,7 +34,7 @@
                 android:background="@drawable/button_bg">
 
                 <TextView
-                    android:id="@+id/tvCategory"
+                    android:id="@+id/tvStageNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

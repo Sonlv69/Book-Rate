@@ -54,7 +54,7 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
     }
 
     override fun onItemViewClick(pos: Int) {
-        val message = bookLists[pos].bookTitle
+        val message = bookLists[pos].name
         val intent = Intent(this.requireContext(), BookDetailActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
         }
@@ -91,29 +91,29 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
 
     private fun showOverflowMenuItemBook(pos: Int, anchor: View) {
         val menu = PopupMenu(requireContext(), anchor)
-        menu.menu.apply {
-            add("None").setOnMenuItemClickListener {
-                bookLists[pos].bookState = "None"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-            add("Read").setOnMenuItemClickListener {
-                bookLists[pos].bookState = "Read"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-            add("Currently Reading").setOnMenuItemClickListener {
-                bookLists[pos].bookState = "Currently Reading"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-
-            add("Want To Read").setOnMenuItemClickListener {
-                bookLists[pos].bookState = "Want To Read"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-        }
+//        menu.menu.apply {
+//            add("None").setOnMenuItemClickListener {
+//                bookLists[pos].state = "None"
+//                bookAdapter.notifyItemChanged(pos)
+//                true
+//            }
+//            add("Read").setOnMenuItemClickListener {
+//                bookLists[pos].state = "Read"
+//                bookAdapter.notifyItemChanged(pos)
+//                true
+//            }
+//            add("Currently Reading").setOnMenuItemClickListener {
+//                bookLists[pos].state = "Currently Reading"
+//                bookAdapter.notifyItemChanged(pos)
+//                true
+//            }
+//
+//            add("Want To Read").setOnMenuItemClickListener {
+//                bookLists[pos].state = "Want To Read"
+//                bookAdapter.notifyItemChanged(pos)
+//                true
+//            }
+//        }
         menu.show()
     }
 

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.BookRate"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.AuthorProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ChangePasswordActivity"
             android:exported="false" />
         <activity

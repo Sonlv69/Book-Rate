@@ -17,77 +17,69 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_keyboard_arrow_left_black" />
+            app:srcCompat="@drawable/ic_keyboard_arrow_left_black"
+            app:tint="@color/colorBlueText" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/ivShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-            app:layout_constraintEnd_toStartOf="@+id/imageView7"
-            app:layout_constraintTop_toTopOf="@+id/imageView7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_bx_share_alt_1" />
 
         <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_rectangle_344" />
-
-        <ImageView
             android:id="@+id/ivCover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="300dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:src="@drawable/book_cover_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailsBackButton" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="4.8"
-            android:textColor="#272670"
+            android:text="0.0"
+            android:textColor="@color/colorBlueText"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tvEmailLabel"
+            app:layout_constraintEnd_toStartOf="@+id/tvReviewed"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivCover" />
 
         <TextView
-            android:id="@+id/tvEmailLabel"
+            android:id="@+id/tvReviewed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="105"
-            android:textColor="#272670"
+            android:text="0"
+            android:textColor="@color/colorBlueText"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textView4"
-            app:layout_constraintEnd_toStartOf="@+id/textView6"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRating"
+            app:layout_constraintEnd_toStartOf="@+id/tvRated"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="@+id/textView4" />
+            app:layout_constraintStart_toEndOf="@+id/tvRating"
+            app:layout_constraintTop_toTopOf="@+id/tvRating" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tvRated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="377"
-            android:textColor="#272670"
+            android:text="0"
+            android:textColor="@color/colorBlueText"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/tvEmailLabel"
+            app:layout_constraintBottom_toBottomOf="@+id/tvReviewed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvEmailLabel"
-            app:layout_constraintTop_toTopOf="@+id/tvEmailLabel" />
+            app:layout_constraintStart_toEndOf="@+id/tvReviewed"
+            app:layout_constraintTop_toTopOf="@+id/tvReviewed" />
 
         <TextView
             android:id="@+id/tvGenderLabel"
@@ -96,9 +88,9 @@
             android:layout_marginTop="2dp"
             android:text="Rating"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView4"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintEnd_toEndOf="@+id/tvRating"
+            app:layout_constraintStart_toStartOf="@+id/tvRating"
+            app:layout_constraintTop_toBottomOf="@+id/tvRating" />
 
         <TextView
             android:id="@+id/textView8"
@@ -107,9 +99,9 @@
             android:layout_marginTop="2dp"
             android:text="Reviewed"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvEmailLabel"
-            app:layout_constraintStart_toStartOf="@+id/tvEmailLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
+            app:layout_constraintEnd_toEndOf="@+id/tvReviewed"
+            app:layout_constraintStart_toStartOf="@+id/tvReviewed"
+            app:layout_constraintTop_toBottomOf="@+id/tvReviewed" />
 
         <TextView
             android:id="@+id/textView9"
@@ -118,17 +110,17 @@
             android:layout_marginTop="2dp"
             android:text="Voted"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView6"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintEnd_toEndOf="@+id/tvRated"
+            app:layout_constraintStart_toStartOf="@+id/tvRated"
+            app:layout_constraintTop_toBottomOf="@+id/tvRated" />
 
         <TextView
-            android:id="@+id/tvNameLabel"
+            android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="Adventure, Fiction"
+            android:text="Category"
             android:textColor="@color/colorPrimaryDarker_2"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -141,14 +133,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:text="Float Cake Vietnam"
-            android:textColor="@color/miniTitle"
+            android:text="Title"
+            android:textColor="@color/colorBlueText"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@+id/tvNameLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tvNameLabel" />
+            app:layout_constraintStart_toStartOf="@+id/tvCategory"
+            app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
 
         <TextView
             android:id="@+id/tvAuthor"
@@ -158,7 +150,7 @@
             android:layout_marginEnd="32dp"
             android:gravity="end"
             android:text="By Author abcde"
-            android:textColor="#272670"
+            android:textColor="@color/colorBlueText"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.7"
@@ -173,7 +165,7 @@
             android:layout_marginEnd="32dp"
             android:gravity="end"
             android:text="Publish by ABC"
-            android:textColor="#272670"
+            android:textColor="@color/colorBlueText"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.7"
@@ -181,14 +173,14 @@
             app:layout_constraintTop_toBottomOf="@+id/tvAuthor" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:lineSpacingExtra="2dp"
-            android:text="      Description TextView Description TextView Description TextView Description TextView Description TextView  Description TextView Description TextView Description TextView."
+            android:text="No description"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -201,40 +193,41 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center_horizontal"
+            android:stepSize="1"
             android:theme="@style/RatingBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
 
 
         <TextView
-            android:id="@+id/tvCommenLabel"
+            android:id="@+id/tvReviewLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Comments"
+            android:text="Reviews"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/edtComment"
+            app:layout_constraintBottom_toTopOf="@+id/edtReview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rbRating" />
 
         <ImageButton
-            android:id="@+id/btnSendComment"
+            android:id="@+id/btnSendRate"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_margin="8dp"
-            android:layout_marginStart="16dp"
             android:background="@drawable/cart_button_bg"
             android:backgroundTintMode="add"
             android:src="@drawable/ic_baseline_send_24"
             app:backgroundTint="@null"
-            app:layout_constraintEnd_toEndOf="@+id/edtComment"
-            app:layout_constraintTop_toBottomOf="@id/rbRating"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintBottom_toBottomOf="@+id/rbRating"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rbRating"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
 
         <EditText
-            android:id="@+id/edtComment"
+            android:id="@+id/edtReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -243,20 +236,33 @@
             android:hint="Write your thought"
             app:layout_constraintBottom_toTopOf="@+id/rcvComment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvCommenLabel"
-            app:layout_constraintTop_toBottomOf="@id/btnSendComment"
+            app:layout_constraintStart_toStartOf="@+id/tvReviewLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvReviewLabel"
             app:layout_constraintVertical_bias="0" />
+
+        <ImageView
+            android:id="@+id/ivSendReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_send"
+            app:layout_constraintBottom_toBottomOf="@id/edtReview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/edtReview"
+            app:layout_constraintTop_toTopOf="@id/edtReview"
+            app:tint="@color/colorPrimaryDarker" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="400dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
+            android:maxHeight="400dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtComment" />
+            app:layout_constraintTop_toBottomOf="@id/edtReview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

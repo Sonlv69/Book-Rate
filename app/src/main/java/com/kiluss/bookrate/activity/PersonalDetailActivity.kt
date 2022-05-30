@@ -1,7 +1,6 @@
 package com.kiluss.bookrate.activity
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -16,27 +15,27 @@ import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.data.model.FollowModel
 import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.MyAccountInfo
+import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.databinding.ActivityPersonalDetailBinding
 import com.kiluss.bookrate.fragment.UserFollowFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
 import com.kiluss.bookrate.utils.Const.Companion.FOLLOWED
 import com.kiluss.bookrate.utils.Const.Companion.FOLLOWING
-import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO
+import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO1
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.MessageFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class PersonalDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonalDetailBinding
     private lateinit var followList: List<FollowModel>
     private lateinit var api: BookService
-    private lateinit var accountInfo: MyAccountInfo
+    private lateinit var account: Account
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +79,10 @@ class PersonalDetailActivity : AppCompatActivity() {
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
         api.getMyAccountInfo(loginResponse.id.toString())
-            .enqueue(object : Callback<MyAccountInfo?> {
+            .enqueue(object : Callback<Account?> {
                 override fun onResponse(
-                    call: Call<MyAccountInfo?>,
-                    response: Response<MyAccountInfo?>
+                    call: Call<Account?>,
+                    response: Response<Account?>
                 ) {
                     when {
                         response.code() == 404 -> {
@@ -93,31 +92,30 @@ class PersonalDetailActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        response.code() == 401 -> {
+                        response.code() == 500 -> {
                             Toast.makeText(
                                 applicationContext,
-                                "Token unauthorized",
+                                "Internal error",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                         response.isSuccessful -> {
                             binding.svMain.visibility = View.VISIBLE
-                            accountInfo = response.body()!!
-                            Log.e("TAG", "onResponse: " + accountInfo.toString())
-                            updateUi(accountInfo)
+                            account = response.body()!!
+                            updateUi(account)
                         }
                     }
                     binding.pbLoading.visibility = View.GONE
                 }
 
-                override fun onFailure(call: Call<MyAccountInfo?>, t: Throwable) {
+                override fun onFailure(call: Call<Account?>, t: Throwable) {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }
             })
     }
 
-    private fun updateUi(info: MyAccountInfo) {
-        binding.edtDisplayName.text = info.userName
+    private fun updateUi(info: Account) {
+        binding.tvDisplayName.text = info.userName
         info.fullName?.let { binding.tvFullName.text = info.fullName }
         info.address?.let { binding.tvAddress.text = info.address }
         info.birthday?.let { binding.tvBirthDay.text = convertDateTime(info.birthday.toString()) }
@@ -133,17 +131,18 @@ class PersonalDetailActivity : AppCompatActivity() {
             )
         }
         info.picture?.let { binding.ivProfile.setImageBitmap(base64ToBitmapDecode(info.picture.toString())) }
+        binding.tvFollowing.text = MessageFormat.format(
+            resources.getText(R.string.text_following).toString(),
+            info.myFollowings?.size
+        )
+        binding.tvFollowed.text = MessageFormat.format(
+            resources.getText(R.string.text_followed).toString(),
+            info.myFollowers?.size
+        )
     }
 
     private fun convertDateTime(jsonDate: String): String {
-        val myFormat = SimpleDateFormat(FORMAT_DATE_ISO)
-        val myDate = myFormat.parse(jsonDate)
-        val cal: Calendar = Calendar.getInstance()
-        cal.time = myDate
-        val year: Int = cal.get(Calendar.YEAR)
-        val month: Int = cal.get(Calendar.MONTH) + 1
-        val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-        return "$day/$month/$year"
+        return jsonDate.split("T")[0]
     }
 
     private fun addFragmentToActivity(fragment: Fragment?, name: String) {

@@ -15,6 +15,7 @@
     <color name="green">#39FF01</color>
     <color name="darkGreen">#5EC542</color>
     <color name="colorBackground">#F4F4F4</color>
+    <color name="colorBlueText">#272670</color>
 
     <!--colors for light mode-->
     <color name="contentBodyColor">#FCFCFC</color>

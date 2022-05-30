@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.MyAccountInfo
+import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.databinding.ActivityChangePasswordBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
@@ -54,10 +54,10 @@ class ChangePasswordActivity : AppCompatActivity() {
                     createJsonObject().toString()
                 )
             )
-            .enqueue(object : Callback<MyAccountInfo?> {
+            .enqueue(object : Callback<Account?> {
                 override fun onResponse(
-                    call: Call<MyAccountInfo?>,
-                    response: Response<MyAccountInfo?>
+                    call: Call<Account?>,
+                    response: Response<Account?>
                 ) {
                     when {
                         response.code() == 404 -> {
@@ -82,7 +82,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<MyAccountInfo?>, t: Throwable) {
+                override fun onFailure(call: Call<Account?>, t: Throwable) {
                     Log.e("TAG", t.stackTraceToString())
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }

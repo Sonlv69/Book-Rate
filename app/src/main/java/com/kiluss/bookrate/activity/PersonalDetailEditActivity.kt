@@ -24,12 +24,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
+import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.MyAccountInfo
 import com.kiluss.bookrate.databinding.ActivityPersonalDetailEditBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO
+import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO1
 import com.kiluss.bookrate.utils.URIPathHelper
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -38,14 +38,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class PersonalDetailEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonalDetailEditBinding
-    private var accountInfo: MyAccountInfo = MyAccountInfo()
+    private var account: Account = Account()
     private lateinit var api: BookService
     private val pickImageFromGalleryForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -58,7 +57,7 @@ class PersonalDetailEditActivity : AppCompatActivity() {
             val file = File(imagePath)
             val imageBitmap = getFileImageBitmap(file)
             binding.ivProfile.setImageBitmap(imageBitmap)
-            accountInfo.picture = encodeImageToBase64String(imageBitmap)
+            account.picture = encodeImageToBase64String(imageBitmap)
         }
     }
 
@@ -92,8 +91,8 @@ class PersonalDetailEditActivity : AppCompatActivity() {
         setUpApi(loginResponse.id.toString())
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                binding.tvBirthDayPicker.text = "$dayOfMonth/${monthOfYear+1}/$year"
-                accountInfo.birthday = timeToIsoString(year, monthOfYear, dayOfMonth)
+                binding.tvBirthDayPicker.text = "$year-${monthOfYear+1}-$dayOfMonth"
+                account.birthday = timeToIsoString(year, monthOfYear, dayOfMonth)
             }
 
         binding.tvBirthDayPicker.setOnClickListener {
@@ -103,8 +102,8 @@ class PersonalDetailEditActivity : AppCompatActivity() {
             pickImage()
         }
         binding.btnSave.setOnClickListener {
-            accountInfo.address = binding.edtAddress.text.toString()
-            accountInfo.fullName = binding.edtFullName.text.toString()
+            account.address = binding.edtAddress.text.toString()
+            account.fullName = binding.edtFullName.text.toString()
             binding.btnSave.isClickable = false
             uploadChange(loginResponse.id.toString())
         }
@@ -114,15 +113,12 @@ class PersonalDetailEditActivity : AppCompatActivity() {
         binding.pbChangeLoading.visibility = View.VISIBLE
         api.changeMyAccountInfo(
                 id,
-                RequestBody.create(
-                    okhttp3.MediaType.parse("application/json; charset=utf-8"),
-                    createJsonObject().toString()
-                )
+                createRequestBody()
             )
-            .enqueue(object : Callback<MyAccountInfo?> {
+            .enqueue(object : Callback<Account?> {
                 override fun onResponse(
-                    call: Call<MyAccountInfo?>,
-                    response: Response<MyAccountInfo?>
+                    call: Call<Account?>,
+                    response: Response<Account?>
                 ) {
                     when {
                         response.code() == 404 -> {
@@ -146,7 +142,7 @@ class PersonalDetailEditActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<MyAccountInfo?>, t: Throwable) {
+                override fun onFailure(call: Call<Account?>, t: Throwable) {
                     Log.e("TAG", t.stackTraceToString())
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                     binding.pbChangeLoading.visibility = View.GONE
@@ -189,29 +185,34 @@ class PersonalDetailEditActivity : AppCompatActivity() {
     }
 
     private fun timeToIsoString(year: Int, month: Int, day: Int): String {
-        val format = SimpleDateFormat(FORMAT_DATE_ISO)
+        val format = SimpleDateFormat(FORMAT_DATE_ISO1)
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day)
         return format.format(calendar.time)
     }
 
+    private fun createRequestBody() = RequestBody.create(
+        okhttp3.MediaType.parse("application/json; charset=utf-8"),
+        createJsonObject().toString()
+    )
+
     private fun createJsonObject(): JSONObject {
         val json = JSONObject()
-        Log.e("picture in account", accountInfo.picture.toString())
+        Log.e("picture in account", account.picture.toString())
         json.put("isActive", true)
-        json.put("fullName", accountInfo.fullName)
-        json.put("birthday", accountInfo.birthday)
-        json.put("address", accountInfo.address)
-        json.put("picture", accountInfo.picture)
+        json.put("fullName", account.fullName)
+        json.put("birthday", account.birthday)
+        json.put("address", account.address)
+        json.put("picture", account.picture)
         return json
     }
 
     private fun setUpApi(id: String) {
         api.getMyAccountInfo(id)
-            .enqueue(object : Callback<MyAccountInfo?> {
+            .enqueue(object : Callback<Account?> {
                 override fun onResponse(
-                    call: Call<MyAccountInfo?>,
-                    response: Response<MyAccountInfo?>
+                    call: Call<Account?>,
+                    response: Response<Account?>
                 ) {
                     when {
                         response.code() == 404 -> {
@@ -230,21 +231,21 @@ class PersonalDetailEditActivity : AppCompatActivity() {
                         }
                         response.isSuccessful -> {
                             binding.svMain.visibility = View.VISIBLE
-                            accountInfo = response.body()!!
-                            updateUi(accountInfo)
+                            account = response.body()!!
+                            updateUi(account)
                         }
                     }
                     binding.pbLoading.visibility = View.GONE
                 }
 
-                override fun onFailure(call: Call<MyAccountInfo?>, t: Throwable) {
+                override fun onFailure(call: Call<Account?>, t: Throwable) {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }
             })
     }
 
-    private fun updateUi(info: MyAccountInfo) {
-        binding.edtDisplayName.setText(info.userName)
+    private fun updateUi(info: Account) {
+        binding.tvDisplayName.setText(info.userName)
         info.fullName?.let { binding.edtFullName.setText(info.fullName) }
         info.address?.let { binding.edtAddress.setText(info.address) }
         info.birthday?.let { binding.tvBirthDayPicker.text = convertDateTime(info.birthday.toString()) }
@@ -272,18 +273,7 @@ class PersonalDetailEditActivity : AppCompatActivity() {
     }
 
     private fun convertDateTime(jsonDate: String): String {
-        return try {
-            val myFormat = SimpleDateFormat(FORMAT_DATE_ISO)
-            val myDate = myFormat.parse(jsonDate)
-            val cal: Calendar = Calendar.getInstance()
-            cal.time = myDate
-            val year: Int = cal.get(Calendar.YEAR)
-            val month: Int = cal.get(Calendar.MONTH) + 1
-            val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-            "$day/$month/$year"
-        } catch (ex: ParseException) {
-            jsonDate
-        }
+        return jsonDate.split("T")[0]
     }
 
     private fun encodeImageToBase64String(bm: Bitmap): String? {

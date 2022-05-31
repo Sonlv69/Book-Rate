@@ -249,7 +249,11 @@ class PersonalDetailEditActivity : AppCompatActivity() {
         info.fullName?.let { binding.edtFullName.setText(info.fullName) }
         info.address?.let { binding.edtAddress.setText(info.address) }
         info.birthday?.let { binding.tvBirthDayPicker.text = convertDateTime(info.birthday.toString()) }
-        info.picture?.let { binding.ivProfile.setImageBitmap(base64ToBitmapDecode(info.picture.toString())) }
+        info.picture?.let {
+            if (it != "") {
+                binding.ivProfile.setImageBitmap(base64ToBitmapDecode(info.picture.toString()))
+            }
+        }
     }
 
     private fun setUpDatePicker(dateSetListener: DatePickerDialog.OnDateSetListener?) {

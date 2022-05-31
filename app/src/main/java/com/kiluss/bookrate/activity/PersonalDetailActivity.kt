@@ -130,7 +130,11 @@ class PersonalDetailActivity : AppCompatActivity() {
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
         }
-        info.picture?.let { binding.ivProfile.setImageBitmap(base64ToBitmapDecode(info.picture.toString())) }
+        info.picture?.let {
+            if (it != "") {
+                binding.ivProfile.setImageBitmap(base64ToBitmapDecode(info.picture.toString()))
+            }
+        }
         binding.tvFollowing.text = MessageFormat.format(
             resources.getText(R.string.text_following).toString(),
             info.myFollowings?.size

@@ -5,11 +5,19 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kiluss.bookrate.data.model.BookModel
+import com.kiluss.bookrate.data.model.BookRate
 import com.kiluss.bookrate.data.model.Tags
 import com.kiluss.bookrate.databinding.ItemBookPreviewBinding
+import com.kiluss.bookrate.network.api.BookService
+import com.kiluss.bookrate.network.api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class BookPreviewAdapter(
     private val bookLists: List<BookModel>,
@@ -41,8 +49,21 @@ class BookPreviewAdapter(
             if (bookModel.picture != null) {
                 binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(bookModel.picture.toString()))
             }
-            binding.tvAuthor.text = bookModel.author?.name.toString()
-            binding.tvGenre.text = displayCategoryString(bookModel.tags)
+            if (bookModel.author != null) {
+                binding.tvAuthor.text = bookModel.author!!.name.toString()
+            } else {
+                binding.llAuthor.visibility = View.GONE
+            }
+            if (!bookModel.tags.isNullOrEmpty()) {
+                if (bookModel.tags?.get(0) != null) {
+                    binding.tvGenre.text = displayCategoryString(bookModel.tags)
+                } else {
+                    binding.llCategory.visibility = View.GONE
+                }
+            } else {
+                binding.llCategory.visibility = View.GONE
+            }
+            getAndUpdateRate(bookModel.id, context)
             binding.tvPublishTime.text = bookModel.publishedYear.toString()
             binding.root.setOnClickListener {
                 bookPreviewAdapterInterface.onItemViewClick(adapterPosition)
@@ -59,12 +80,53 @@ class BookPreviewAdapter(
 
         private fun displayCategoryString(tags: ArrayList<Tags>?): String {
             val listTagName = arrayListOf<String>()
-            if (tags != null) {
+            return if (tags != null) {
                 for (tag in tags) {
                     tag.tag?.name?.let { listTagName.add(it) }
                 }
-                return listTagName.toString().replace("[", "").replace("]", "")
-            } else return "No category"
+                listTagName.toString().replace("[", "").replace("]", "")
+            } else "No category"
+        }
+
+        private fun getAndUpdateRate(id: Int?, context: Context) {
+            id?.let {
+                RetrofitClient.getInstance(context).getClientUnAuthorize()
+                    .create(BookService::class.java).getBookRate(it).enqueue(object : Callback<BookRate?> {
+                    override fun onResponse(call: Call<BookRate?>, response: Response<BookRate?>) {
+                        when {
+                            response.code() == 404 -> {
+                                Toast.makeText(
+                                    context,
+                                    "Url is not exist",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            response.code() == 500 -> {
+                                Toast.makeText(
+                                    context,
+                                    "Internal error",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            response.isSuccessful -> {
+                                if (response.body()?.rateAvg != null) {
+                                    binding.rbRating.rating = response.body()!!.rateAvg!!.toFloat()
+                                } else {
+                                    binding.rbRating.visibility = View.GONE
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BookRate?>, t: Throwable) {
+                        Toast.makeText(
+                            context,
+                            t.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+            }
         }
     }
 }

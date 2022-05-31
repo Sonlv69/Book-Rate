@@ -6,29 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kiluss.bookrate.databinding.ItemCategoryRequestBinding
 
 class CategoryRequestAdapter(
-    private val categorys: List<String>,
+    private val categories: List<String>,
     private val categoryRequestAdapterInterface: CategoryRequestAdapterInterface
-) : RecyclerView.Adapter<CategoryRequestAdapter.BookPreviewHolder>() {
+) : RecyclerView.Adapter<CategoryRequestAdapter.CategoryHolder>() {
 
     interface CategoryRequestAdapterInterface {
         fun onClearCategoryClick(adapterPosition: Int, category: String)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookPreviewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHolder {
         val binding =
             ItemCategoryRequestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookPreviewHolder(binding)
+        return CategoryHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: BookPreviewHolder, position: Int) {
-        holder.bindView(categorys[position])
+    override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
+        holder.bindView(categories[position])
     }
 
     override fun getItemCount(): Int {
-        return categorys.size
+        return categories.size
     }
 
-    inner class BookPreviewHolder(
+    inner class CategoryHolder(
         val binding: ItemCategoryRequestBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 

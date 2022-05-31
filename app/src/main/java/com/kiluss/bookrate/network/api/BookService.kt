@@ -1,6 +1,7 @@
 package com.kiluss.bookrate.network.api
 
 import com.kiluss.bookrate.data.model.*
+import com.kiluss.bookrate.data.model.Tag
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -63,5 +64,10 @@ interface BookService {
     fun getPublisherInfo(
         @Path("id") id: Int
     ): Call<Publisher>
+
+    @GET("Tag/{id}")
+    fun getTagInfo(
+        @Path("id") id: Int
+    ): Call<Tag>
 
 }

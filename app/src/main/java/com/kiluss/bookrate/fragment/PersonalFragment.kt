@@ -36,17 +36,17 @@ class PersonalFragment : Fragment() {
         val account = activityViewModel.accountInfo.value
         if (account != null) {
             binding.profileCircleImageView.setImageBitmap(account.picture?.let {
-                activityViewModel.base64ToBitmapDecode(
-                    it
-                )
+                activityViewModel.base64ToBitmapDecode(it)
             })
         }
         activityViewModel.accountInfo.observe(requireActivity()) {
-            binding.profileCircleImageView.setImageBitmap(
-                activityViewModel.base64ToBitmapDecode(
-                    activityViewModel.accountInfo.value?.picture.toString()
+            if (it.picture != "") {
+                binding.profileCircleImageView.setImageBitmap(
+                    activityViewModel.base64ToBitmapDecode(
+                        it.picture.toString()
+                    )
                 )
-            )
+            }
         }
         binding.rlPersonalDetail.setOnClickListener {
             requireActivity().startActivity(
@@ -92,9 +92,14 @@ class PersonalFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        activityViewModel.getMyAccount(requireContext())
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        //_binding = null
     }
 
     private fun createSignOutDialog() {

@@ -38,6 +38,7 @@
             android:theme="@style/RatingBar" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -55,11 +56,11 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
-                android:text="Arthur Conan Doyle"
                 android:textSize="@dimen/textview_text_normal_size" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/llCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -77,7 +78,6 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
-                android:text="Detective, Adventure"
                 android:textSize="@dimen/textview_text_normal_size" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -132,7 +132,7 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="1"
-                android:text="22/02/2000"
+                android:text="2000"
                 android:textSize="@dimen/textview_text_normal_size" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>

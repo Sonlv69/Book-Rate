@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.util.Base64
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,19 +18,21 @@ import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.ReviewAdapter
 import com.kiluss.bookrate.data.model.*
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.databinding.ActivityBookDetailBinding
+import com.kiluss.bookrate.fragment.CategoryDialogFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
 import com.kiluss.bookrate.utils.Const.Companion.API_URL
-import com.kiluss.bookrate.viewmodel.MainActivityViewModel
+import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdapterInterface {
+    private var bookId: Int = 0
     private lateinit var loginResponse: LoginResponse
     private lateinit var binding: ActivityBookDetailBinding
     private lateinit var reviewAdapter: ReviewAdapter
@@ -42,9 +45,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         listReviews = arrayListOf()
-
-        val bookId = intent.getIntExtra(EXTRA_MESSAGE, 0)
-
+        bookId = intent.getIntExtra(EXTRA_MESSAGE, 0)
         //binding.tvReviewNumber.text = book?.reviews?.size.toString()
         binding.detailsBackButton.setOnClickListener {
             this.finish()
@@ -54,6 +55,12 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
             .create(BookService::class.java)
         apiAuthorized = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token!!)
             .create(BookService::class.java)
+        getBookById(bookId.toString())
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        bookId = intent?.getIntExtra(EXTRA_MESSAGE, 0)!!
         getBookById(bookId.toString())
     }
 
@@ -108,10 +115,13 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         if (book.picture != null) {
             binding.ivCover.setImageBitmap(base64ToBitmapDecode(book.picture.toString()))
         }
-        binding.tvAuthor.text = getString(R.string.by_author_text, book.author?.name.toString())
+        val authorString =
+            SpannableString(getString(R.string.by_author_text, book.author?.name.toString()))
+        authorString.setSpan(StyleSpan(Typeface.ITALIC), 0, authorString.length, 0)
+        binding.tvAuthor.text = authorString
+
         binding.tvPublisher.text =
             getString(R.string.publish_by_text, book.publisher?.name.toString())
-        binding.tvCategory.text = displayCategoryString(book.tags)
         binding.tvReviewed.text = book.reviews?.size.toString()
         if (book.description.toString() != "") {
             binding.tvDescription.text = book.description.toString()
@@ -129,6 +139,12 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             }
             startActivity(intent)
+        }
+        binding.tvCategory.text = displayCategoryString(book.tags)
+        binding.tvCategory.setOnClickListener {
+            book.tags?.let { it1 ->
+                CategoryDialogFragment.newInstance(it1).show(supportFragmentManager, "Category")
+            }
         }
         book.reviews?.let {
             listReviews = book.reviews!!

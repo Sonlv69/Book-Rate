@@ -19,6 +19,9 @@
         android:theme="@style/Theme.BookRate"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.CategoryDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.PublisherProfileActivity"
             android:exported="false" />
         <activity
@@ -38,6 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.BookDetailActivity"
+            android:noHistory="true"
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"

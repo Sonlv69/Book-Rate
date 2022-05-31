@@ -11,9 +11,7 @@ import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
-import com.kiluss.bookrate.databinding.FragmentMostRateHomeBinding
 import com.kiluss.bookrate.data.model.BookModel
-import com.kiluss.bookrate.data.model.Tags
 import com.kiluss.bookrate.databinding.FragmentMostRecentHomeBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient

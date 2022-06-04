@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -506,6 +505,12 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                 ).show()
             }
         })
+    }
+
+    override fun onToAccountInfoPage(accountId: Int) {
+        val intent = Intent(this, UserDetailActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, accountId)
+        startActivity(intent)
     }
 
     private fun getLoginResponse(context: Context): LoginResponse {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -64,7 +63,7 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     internal fun getMyAccount(context: Context) {
         api = RetrofitClient.getInstance(context).getClientAuthorized(loginResponse.value?.token.toString())
             .create(BookService::class.java)
-        api.getMyAccountInfo(loginResponse.value?.id.toString())
+        api.getAccountInfo(loginResponse.value?.id.toString())
             .enqueue(object : Callback<Account?> {
                 override fun onResponse(
                     call: Call<Account?>,

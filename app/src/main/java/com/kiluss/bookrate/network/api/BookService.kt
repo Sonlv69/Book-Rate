@@ -20,7 +20,7 @@ interface BookService {
     ): Call<Account>
 
     @GET("Account/noPassword/{id}")
-    fun getMyAccountInfo(
+    fun getAccountInfo(
         @Path("id") id: String
     ): Call<Account>
 

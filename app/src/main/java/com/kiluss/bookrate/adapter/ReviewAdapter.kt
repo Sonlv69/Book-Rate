@@ -31,6 +31,7 @@ class ReviewAdapter(
         fun onDeleteReview(id: Int)
         fun onEditReply(id: Int, idParent: Int, currentContent: String)
         fun onDeleteReply(id: Int, idParent: Int)
+        fun onToAccountInfoPage(accountId: Int)
     }
 
     init {
@@ -127,6 +128,12 @@ class ReviewAdapter(
                 binding.llReply.visibility = View.GONE
             }
             binding.ivDelete.setOnClickListener { review.id?.let { it1 -> createDeleteDialog(it1) } }
+            binding.ivCommentAvatar.setOnClickListener {
+                review.iDAcc?.let { it1 -> commentAdapterAdapterInterface.onToAccountInfoPage(it1) }
+            }
+            binding.tvCommentName.setOnClickListener {
+                review.iDAcc?.let { it1 -> commentAdapterAdapterInterface.onToAccountInfoPage(it1) }
+            }
         }
         private fun base64ToBitmapDecode(base64Image: String): Bitmap? {
             val decodedString = Base64.decode(base64Image, Base64.DEFAULT)
@@ -155,6 +162,10 @@ class ReviewAdapter(
 
         override fun onDeleteReply(id: Int, idParent: Int) {
             commentAdapterAdapterInterface.onDeleteReply(id, idParent)
+        }
+
+        override fun onToAccountInfoPage(accountId: Int) {
+            commentAdapterAdapterInterface.onToAccountInfoPage(accountId)
         }
     }
 }

@@ -1,46 +1,45 @@
 package com.kiluss.bookrate.activity
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
+import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.data.model.FollowModel
 import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.Account
-import com.kiluss.bookrate.databinding.ActivityPersonalDetailBinding
+import com.kiluss.bookrate.databinding.ActivityUserDetailBinding
 import com.kiluss.bookrate.fragment.UserFollowFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWED
 import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWING
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.MessageFormat
-import java.util.*
 
 
-class PersonalDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPersonalDetailBinding
+class UserDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUserDetailBinding
     private lateinit var followList: List<FollowModel>
     private lateinit var api: BookService
     private lateinit var account: Account
+    private lateinit var loginResponse: LoginResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPersonalDetailBinding.inflate(layoutInflater)
+        binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.svMain.visibility = View.INVISIBLE
-        setUpApi()
         followList = arrayListOf(
             FollowModel("", "KiluSs", 12, true),
             FollowModel("", "KiluSs", 12, false),
@@ -56,6 +55,9 @@ class PersonalDetailActivity : AppCompatActivity() {
             )
             supportActionBar?.title = FOLLOWED
         }
+        loginResponse = getLoginResponse(this)
+        val accountId = intent.getIntExtra(EXTRA_MESSAGE, -1)
+        setUpApi(accountId)
 
         binding.tvFollowing.setOnClickListener {
             addFragmentToActivity(
@@ -66,17 +68,10 @@ class PersonalDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpApi() {
-        val sharedPref = getSharedPreferences(
-            getString(R.string.saved_login_account_key),
-            Context.MODE_PRIVATE
-        )
-        val gson = Gson()
-        val json: String? = sharedPref.getString(getString(R.string.saved_login_account_key), "")
-        val loginResponse = gson.fromJson(json, LoginResponse::class.java)
+    private fun setUpApi(accountId: Int) {
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
-        api.getAccountInfo(loginResponse.id.toString())
+        api.getAccountInfo(accountId.toString())
             .enqueue(object : Callback<Account?> {
                 override fun onResponse(
                     call: Call<Account?>,
@@ -98,6 +93,7 @@ class PersonalDetailActivity : AppCompatActivity() {
                             ).show()
                         }
                         response.isSuccessful -> {
+                            response.body()?.userName?.let { Log.e("id", it) }
                             binding.svMain.visibility = View.VISIBLE
                             account = response.body()!!
                             updateUi(account)
@@ -110,11 +106,6 @@ class PersonalDetailActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }
             })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setUpApi()
     }
 
     private fun updateUi(info: Account) {
@@ -135,11 +126,19 @@ class PersonalDetailActivity : AppCompatActivity() {
             resources.getText(R.string.text_follower).toString(),
             info.myFollowers?.size
         )
-        binding.ivEdit.setOnClickListener {
-            startActivity(
-                Intent(this, PersonalDetailEditActivity::class.java)
-            )
+        binding.btnFollow.setOnClickListener {
+
         }
+    }
+
+    private fun getLoginResponse(context: Context) : LoginResponse {
+        val sharedPref = context.getSharedPreferences(
+            context.getString(R.string.saved_login_account_key),
+            Context.MODE_PRIVATE
+        )
+        val gson = Gson()
+        val json: String? = sharedPref.getString(context.getString(R.string.saved_login_account_key), "")
+        return gson.fromJson(json, LoginResponse::class.java)
     }
 
     private fun convertDateTime(jsonDate: String): String {

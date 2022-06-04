@@ -19,6 +19,9 @@
         android:theme="@style/Theme.BookRate"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.UserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CategoryDetailActivity"
             android:exported="false" />
         <activity
@@ -41,8 +44,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.BookDetailActivity"
-            android:noHistory="true"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true">

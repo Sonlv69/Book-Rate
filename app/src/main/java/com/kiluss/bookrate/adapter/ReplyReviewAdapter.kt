@@ -23,6 +23,7 @@ class ReplyReviewAdapter(
     interface ReplyAdapterAdapterInterface {
         fun onEditReply(id: Int, idParent: Int, currentContent: String)
         fun onDeleteReply(id: Int, idParent: Int)
+        fun onToAccountInfoPage(accountId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,6 +58,12 @@ class ReplyReviewAdapter(
                     showOverflowMenu(reply, ivMore)
                 }
                 tvDate.text = reply.date.toString().split("T")[0]
+                ivCommentAvatar.setOnClickListener {
+                    reply.iDAcc?.let { it1 -> replyAdapterAdapterInterface.onToAccountInfoPage(it1) }
+                }
+                tvCommentName.setOnClickListener {
+                    reply.iDAcc?.let { it1 -> replyAdapterAdapterInterface.onToAccountInfoPage(it1) }
+                }
             }
         }
 

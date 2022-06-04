@@ -208,7 +208,7 @@ class PersonalDetailEditActivity : AppCompatActivity() {
     }
 
     private fun setUpApi(id: String) {
-        api.getMyAccountInfo(id)
+        api.getAccountInfo(id)
             .enqueue(object : Callback<Account?> {
                 override fun onResponse(
                     call: Call<Account?>,

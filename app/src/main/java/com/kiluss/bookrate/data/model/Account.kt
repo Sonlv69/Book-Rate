@@ -8,8 +8,6 @@ import kotlinx.android.parcel.Parcelize
 data class Account(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("userName") var userName: String? = null,
-    @SerializedName("password") var password: String? = null,
-    @SerializedName("isActive") var isActive: Boolean? = null,
     @SerializedName("fullName") var fullName: String? = null,
     @SerializedName("birthday") var birthday: String? = null,
     @SerializedName("address") var address: String? = null,
@@ -19,6 +17,5 @@ data class Account(
     @SerializedName("myFollowings") var myFollowings: ArrayList<MyFollowings>? = arrayListOf(),
     @SerializedName("myFollowers") var myFollowers: ArrayList<MyFollowers>? = arrayListOf(),
     @SerializedName("myBooks") var myBooks: ArrayList<MyBook>? = arrayListOf(),
-    @SerializedName("reviews") var reviews: ArrayList<Reviews>? = arrayListOf(),
     @SerializedName("proposes") var proposes: ArrayList<Proposes>? = arrayListOf()
 ) : Parcelable

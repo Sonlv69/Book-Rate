@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Base64
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
@@ -22,8 +24,8 @@ import com.kiluss.bookrate.databinding.ActivityBookDetailBinding
 import com.kiluss.bookrate.fragment.CategoryDialogFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.API_URL
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.API_URL
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -40,6 +42,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
     private lateinit var apiUnauthorized: BookService
     private lateinit var apiAuthorized: BookService
     private lateinit var book: BookModel
+    private var idReview: Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
@@ -55,16 +58,16 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
             .create(BookService::class.java)
         apiAuthorized = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token!!)
             .create(BookService::class.java)
-        getBookById(bookId.toString())
+        getBookById(bookId.toString(), false, idReview)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         bookId = intent?.getIntExtra(EXTRA_MESSAGE, 0)!!
-        getBookById(bookId.toString())
+        getBookById(bookId.toString(), false, idReview)
     }
 
-    private fun getBookById(bookId: String) {
+    private fun getBookById(bookId: String, isShowReply: Boolean, idReview: Int) {
         apiUnauthorized.getBookById(bookId).enqueue(object : Callback<BookModel?> {
             override fun onResponse(call: Call<BookModel?>, response: Response<BookModel?>) {
                 when {
@@ -85,7 +88,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                     response.isSuccessful -> {
                         response.body()?.let {
                             book = response.body()!!
-                            setUpBookUi()
+                            setUpBookUi(isShowReply, idReview)
                         }
                     }
                 }
@@ -101,14 +104,14 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         })
     }
 
-    private fun setUpBookUi() {
+    private fun setUpBookUi(isShowReply: Boolean, idReview: Int) {
         getAndUpdateRate()
         binding.ivShare.setOnClickListener {
             ShareCompat.IntentBuilder(this)
                 .setType("text/plain")
                 .setChooserTitle("Share ${book.name}:")
                 .setText("$API_URL/book/${book.id}")
-                .startChooser();
+                .startChooser()
         }
         binding.tvBookTitle.text = book.name
         supportActionBar?.title = book.name
@@ -142,22 +145,31 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         }
         binding.tvCategory.text = displayCategoryString(book.tags)
         binding.tvCategory.setOnClickListener {
-            book.tags?.let { it1 ->
-                CategoryDialogFragment.newInstance(it1).show(supportFragmentManager, "Category")
+            if (book.tags?.size == 1) {
+                val intent = Intent(this, CategoryDetailActivity::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, book.tags!![0].iDTag)
+                }
+                startActivity(intent)
+            } else {
+                book.tags?.let { it1 ->
+                    CategoryDialogFragment.newInstance(it1).show(supportFragmentManager, "Category")
+                }
             }
         }
+        book.publishedYear?.let { binding.tvPublishYear.text = it.toString() }
         book.reviews?.let {
             listReviews = book.reviews!!
-            reviewAdapter = ReviewAdapter(this, listReviews, this)
+            reviewAdapter = ReviewAdapter(this, listReviews, this, isShowReply, idReview)
             binding.rcvComment.adapter = reviewAdapter
             binding.rcvComment.layoutManager =
                 LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         }
         binding.btnSendRate.setOnClickListener {
-            apiAuthorized.createOrUpdateRate(
-                createRequestBody(
+            apiAuthorized.createReview(
+                createRequestBodyForNewReview(
                     book.id!!,
-                    binding.rbRating.rating.toInt()
+                    binding.rbRating.rating.toInt(),
+                    binding.edtReview.text.toString()
                 )
             ).enqueue(object : Callback<Any?> {
                 override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
@@ -168,6 +180,9 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                                 "Url is not exist",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
+                        response.code() == 400 -> {
+                            putReview()
                         }
                         response.code() == 500 -> {
                             Toast.makeText(
@@ -182,7 +197,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                                 "Rated!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            getBookById(book.id.toString())
+                            getBookById(book.id.toString(), false, this@BookDetailActivity.idReview)
                         }
                     }
                 }
@@ -198,11 +213,92 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         }
     }
 
-    private fun createRequestBody(idBook: Int, rate: Int) = run {
+    private fun putReview() {
+        apiAuthorized.putReview(findMyReviewId(), createRequestBodyForPutReview(
+            binding.rbRating.rating.toInt(),
+            binding.edtReview.text.toString()
+        )).enqueue(object : Callback<Any?> {
+            override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
+                when {
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Changed exist review!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        getBookById(book.id.toString(), false, idReview)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Any?>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    private fun findMyReviewId(): Int {
+        for (review in listReviews) {
+            if (review.iDAcc == loginResponse.id) {
+                return review.id!!
+            }
+        }
+        return -1
+    }
+
+    private fun createRequestBodyForNewReview(idBook: Int, rate: Int, content: String) = run {
         val json = JSONObject()
-        json.put("ID_Acc", loginResponse.id)
         json.put("ID_Book", idBook)
         json.put("Rate", rate)
+        json.put("content", content)
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toString()
+        )
+    }
+
+    private fun createRequestBodyForPutReview(rate: Int, content: String) = run {
+        val json = JSONObject()
+        json.put("Rate", rate)
+        json.put("content", content)
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toString()
+        )
+    }
+
+    private fun createRequestBodyForReply(idParent: Int, content: String) = run {
+        val json = JSONObject()
+        json.put("id_parent", idParent)
+        json.put("content", content)
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toString()
+        )
+    }
+
+    private fun createRequestBodyForPutReply(rate: String, content: Int) = run {
+        val json = JSONObject()
+        json.put("content", rate)
+        json.put("id_parent", content)
         RequestBody.create(
             okhttp3.MediaType.parse("application/json; charset=utf-8"),
             json.toString()
@@ -229,7 +325,9 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                             ).show()
                         }
                         response.isSuccessful -> {
-                            binding.tvRating.text = String.format("%,.1f", response.body()?.rateAvg)
+                            response.body()?.rateAvg?.let { rate ->
+                                binding.tvRating.text = String.format("%,.1f", rate)
+                            }
                         }
                     }
                 }
@@ -246,13 +344,13 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
     }
 
     private fun displayCategoryString(tags: ArrayList<Tags>?): String {
-        var listTagName = arrayListOf<String>()
-        if (tags != null) {
+        val listTagName = arrayListOf<String>()
+        return if (tags != null) {
             for (tag in tags) {
                 tag.tag?.name?.let { listTagName.add(it) }
             }
-            return listTagName.toString().replace("[", "").replace("]", "")
-        } else return "No category"
+            listTagName.toString().replace("[", "").replace("]", "")
+        } else "No category"
     }
 
     private fun base64ToBitmapDecode(base64Image: String): Bitmap? {
@@ -260,20 +358,154 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
-    override fun onReplyClick(adapterPosition: Int, category: Reviews) {
+    override fun onSendReplyClick(idParent: Int, comment: String) {
+        idReview = idParent
+        apiAuthorized.postReply(createRequestBodyForReply(idParent, comment)).enqueue(object : Callback<Any?> {
+            override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
+                when {
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        getBookById(book.id.toString(), true, idReview)
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<Any?>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
-    override fun onLikeOnClick(adapterPosition: Int, category: Reviews) {
+    override fun onDeleteReview(id: Int) {
+        apiAuthorized.deleteReview(id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                when {
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        getBookById(bookId.toString(), false, idReview)
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
-    override fun onLikeOffOnClick(adapterPosition: Int, category: Reviews) {
+    override fun onEditReply(id: Int, idParent: Int, currentContent: String) {
+        binding.apply {
+            llEditReply.visibility = View.VISIBLE
+            edtEditReply.setText(currentContent)
+            btnEditReply.setOnClickListener {
+                llEditReply.visibility = View.GONE
+                apiAuthorized.putReply(id, createRequestBodyForPutReply(
+                    binding.edtEditReply.text.toString(), idParent
+                )).enqueue(object : Callback<Any?> {
+                    override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
+                        when {
+                            response.code() == 404 -> {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Url is not exist",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            response.code() == 500 -> {
+                                Toast.makeText(
+                                    applicationContext,
+                                    "Internal error",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            response.isSuccessful -> {
+                                getBookById(book.id.toString(), true, idReview)
+                            }
+                        }
+                    }
 
+                    override fun onFailure(call: Call<Any?>, t: Throwable) {
+                        Toast.makeText(
+                            applicationContext,
+                            t.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+            }
+            btnEditReplyCancel.setOnClickListener {
+                binding.llEditReply.visibility = View.GONE
+            }
+        }
     }
 
-    override fun onSendReplyClick(adapterPosition: Int, category: Reviews, comment: String) {
+    override fun onDeleteReply(id: Int, idParent: Int) {
+        idReview = idParent
+        apiAuthorized.deleteReply(id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                when {
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        getBookById(bookId.toString(), true, idReview)
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun getLoginResponse(context: Context): LoginResponse {

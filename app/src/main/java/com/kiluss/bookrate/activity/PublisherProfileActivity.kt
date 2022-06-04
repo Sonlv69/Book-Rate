@@ -13,15 +13,13 @@ import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
-import com.kiluss.bookrate.data.model.Author
 import com.kiluss.bookrate.data.model.BookModel
 import com.kiluss.bookrate.data.model.LoginResponse
 import com.kiluss.bookrate.data.model.Publisher
-import com.kiluss.bookrate.databinding.ActivityAuthorProfileBinding
 import com.kiluss.bookrate.databinding.ActivityPublisherProfileBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const
+import com.kiluss.bookrate.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +34,7 @@ class PublisherProfileActivity : AppCompatActivity(), BookPreviewAdapterInterfac
         super.onCreate(savedInstanceState)
         binding = ActivityPublisherProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val idPublisher = intent.getIntExtra(Const.EXTRA_MESSAGE, 0)
+        val idPublisher = intent.getIntExtra(Constants.EXTRA_MESSAGE, 0)
         val loginResponse = getLoginResponse(this)
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
@@ -105,7 +103,7 @@ class PublisherProfileActivity : AppCompatActivity(), BookPreviewAdapterInterfac
 
     override fun onItemViewClick(pos: Int) {
         val intent = Intent(this, BookDetailActivity::class.java).apply {
-            putExtra(Const.EXTRA_MESSAGE, bookLists[pos].id)
+            putExtra(Constants.EXTRA_MESSAGE, bookLists[pos].id)
             addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         }
         startActivity(intent)

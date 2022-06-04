@@ -29,7 +29,7 @@ import com.kiluss.bookrate.data.model.LoginResponse
 import com.kiluss.bookrate.databinding.ActivityPersonalDetailEditBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO1
+import com.kiluss.bookrate.utils.Constants.Companion.FORMAT_DATE_ISO1
 import com.kiluss.bookrate.utils.URIPathHelper
 import okhttp3.RequestBody
 import org.json.JSONObject

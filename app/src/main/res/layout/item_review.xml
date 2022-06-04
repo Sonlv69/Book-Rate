@@ -35,16 +35,31 @@
             app:layout_constraintStart_toEndOf="@+id/ivCommentAvatar"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvCommentName"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:text="Le Son"
-                android:textSize="@dimen/textview_text_book_preview_title"
-                android:textStyle="bold" />
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/tvCommentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/ivDelete"
+                    android:ellipsize="end"
+                    android:text="Le Son"
+                    android:textSize="@dimen/textview_text_book_preview_title"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_clear"
+                    android:visibility="gone"
+                    app:tint="@color/colorBlueText" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvComment"
@@ -68,13 +83,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Time"
                 android:layout_marginEnd="4dp"
-                android:textStyle="italic"
-                android:textSize="16sp"
                 android:gravity="center"
+                android:text="Time"
+                android:textSize="16sp"
+                android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="@id/llComment"
                 app:layout_constraintTop_toBottomOf="@+id/llComment" />
+
             <RatingBar
                 android:id="@+id/rbReview"
                 style="@style/Widget.AppCompat.RatingBar.Small"
@@ -87,8 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Reply"
-                android:textSize="16sp"
                 android:textColor="@color/colorBlueText"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -100,15 +116,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/llComment"
             app:layout_constraintTop_toBottomOf="@id/llLike">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivReplyAvatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/user_df_avatar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/edtReply"
@@ -134,11 +141,11 @@
             android:id="@+id/tvShowReply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Show reply"
-            android:textSize="16sp"
-            android:textColor="@color/colorBlueText"
-            android:textStyle="bold"
             android:paddingVertical="4dp"
+            android:text="Show reply"
+            android:textColor="@color/colorBlueText"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/llComment"
             app:layout_constraintTop_toBottomOf="@id/llReply" />

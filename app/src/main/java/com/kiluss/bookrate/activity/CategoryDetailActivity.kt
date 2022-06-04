@@ -2,13 +2,11 @@ package com.kiluss.bookrate.activity
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
@@ -21,11 +19,10 @@ import com.kiluss.bookrate.data.model.Tag
 import com.kiluss.bookrate.databinding.ActivityCategoryDetailBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const
+import com.kiluss.bookrate.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.stream.Collectors
 
 class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface {
     private lateinit var binding: ActivityCategoryDetailBinding
@@ -37,7 +34,7 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val idTag = intent.getIntExtra(Const.EXTRA_MESSAGE, 0)
+        val idTag = intent.getIntExtra(Constants.EXTRA_MESSAGE, 0)
         val loginResponse = getLoginResponse(this)
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
@@ -46,7 +43,6 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
 
     private fun getCategoryInfo(id: Int) {
         api.getTagInfo(id).enqueue(object : Callback<Tag?> {
-            @RequiresApi(Build.VERSION_CODES.N)
             override fun onResponse(call: Call<Tag?>, response: Response<Tag?>) {
                 when {
                     response.code() == 404 -> {
@@ -64,9 +60,13 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
                         ).show()
                     }
                     response.isSuccessful -> {
-                        tag = response.body()!!
-                        Log.e("TAG", "onResponse: " + tag.toString())
-                        updateUi(tag)
+                        if (response.body() != null) {
+                            tag = response.body()!!
+                            Log.e("TAG", "onResponse: " + tag.toString())
+                            updateUi(tag)
+                        } else {
+                            binding.shimmerViewContainer.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -77,12 +77,15 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun updateUi(info: Tag) {
         info.name?.let { binding.tvDisplayName.text = it }
         info.description?.let { binding.tvDescription.text = it }
-        bookLists = if (tag.books != null) {
-            tag.books!!.stream().map {tags -> tags.book}.collect(Collectors.toList()) as ArrayList<BookModel>
+        bookLists = if (tag.tags != null) {
+            val books = arrayListOf<BookModel>()
+            for (tag in tag.tags!!) {
+                tag.book?.let { books.add(it) }
+            }
+            books
         } else {
             arrayListOf()
         }
@@ -106,7 +109,7 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
 
     override fun onItemViewClick(pos: Int) {
         val intent = Intent(this, BookDetailActivity::class.java).apply {
-            putExtra(Const.EXTRA_MESSAGE, bookLists[pos].id)
+            putExtra(Constants.EXTRA_MESSAGE, bookLists[pos].id)
             addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         }
         startActivity(intent)
@@ -142,10 +145,6 @@ class CategoryDetailActivity : AppCompatActivity(), BookPreviewAdapterInterface 
             }
         }
         menu.show()
-    }
-
-    private fun convertDateTime(jsonDate: String): String {
-        return jsonDate.split("T")[0]
     }
 
     private fun getLoginResponse(context: Context): LoginResponse {

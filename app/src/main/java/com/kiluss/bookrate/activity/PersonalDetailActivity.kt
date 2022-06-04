@@ -1,11 +1,11 @@
 package com.kiluss.bookrate.activity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,14 +20,12 @@ import com.kiluss.bookrate.databinding.ActivityPersonalDetailBinding
 import com.kiluss.bookrate.fragment.UserFollowFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.FOLLOWED
-import com.kiluss.bookrate.utils.Const.Companion.FOLLOWING
-import com.kiluss.bookrate.utils.Const.Companion.FORMAT_DATE_ISO1
+import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWED
+import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWING
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.MessageFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -114,6 +112,11 @@ class PersonalDetailActivity : AppCompatActivity() {
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+        setUpApi()
+    }
+
     private fun updateUi(info: Account) {
         binding.tvDisplayName.text = info.userName
         info.fullName?.let { binding.tvFullName.text = info.fullName }
@@ -140,9 +143,14 @@ class PersonalDetailActivity : AppCompatActivity() {
             info.myFollowings?.size
         )
         binding.tvFollowed.text = MessageFormat.format(
-            resources.getText(R.string.text_followed).toString(),
+            resources.getText(R.string.text_follower).toString(),
             info.myFollowers?.size
         )
+        binding.ivEdit.setOnClickListener {
+            startActivity(
+                Intent(this, PersonalDetailEditActivity::class.java)
+            )
+        }
     }
 
     private fun convertDateTime(jsonDate: String): String {

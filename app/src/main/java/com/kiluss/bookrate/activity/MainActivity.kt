@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
 
-        val item = menu?.findItem(R.id.action_search);
+        val item = menu?.findItem(R.id.action_search)
         val searchView = item?.actionView as SearchView
 
         // search queryTextChange Listener

@@ -13,7 +13,7 @@ class HomePagerAdapter(fm: Fragment) : FragmentStateAdapter(fm) {
     enum class TabLayoutEnum{
         MOST_RECENT, TRENDING, MOST_RATE
     }
-    override fun getItemCount(): Int = 3
+    override fun getItemCount() = 3
 
     override fun createFragment(position: Int): Fragment = when(position) {
         TabLayoutEnum.MOST_RECENT.ordinal -> MostRecentHomeFragment()

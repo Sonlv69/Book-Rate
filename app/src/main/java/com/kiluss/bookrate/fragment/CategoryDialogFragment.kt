@@ -12,7 +12,7 @@ import com.kiluss.bookrate.R
 import com.kiluss.bookrate.activity.CategoryDetailActivity
 import com.kiluss.bookrate.adapter.CategoryNameAdapter
 import com.kiluss.bookrate.data.model.Tags
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 
 class CategoryDialogFragment : DialogFragment(), CategoryNameAdapter.CategoryNameAdapterInterface {
     private lateinit var categoryNameAdapter: CategoryNameAdapter
@@ -58,6 +58,10 @@ class CategoryDialogFragment : DialogFragment(), CategoryNameAdapter.CategoryNam
     }
 
     override fun onCategoryClick(adapterPosition: Int, id: Int?) {
+        startCategoryActivity(id)
+    }
+
+    private fun startCategoryActivity(id: Int?) {
         val intent = Intent(requireContext(), CategoryDetailActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, id)
         }
@@ -65,7 +69,7 @@ class CategoryDialogFragment : DialogFragment(), CategoryNameAdapter.CategoryNam
         dialog?.dismiss()
     }
 
-    fun setFullScreen() {
+    private fun setFullScreen() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

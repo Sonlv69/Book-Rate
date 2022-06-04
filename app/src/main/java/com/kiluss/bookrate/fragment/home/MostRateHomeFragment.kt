@@ -6,7 +6,7 @@ import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface

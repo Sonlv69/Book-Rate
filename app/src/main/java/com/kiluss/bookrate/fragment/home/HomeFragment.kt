@@ -10,9 +10,7 @@ import com.kiluss.bookrate.adapter.HomePagerAdapter
 import com.kiluss.bookrate.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private lateinit var homePagerAdapter: HomePagerAdapter
 
@@ -20,7 +18,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 

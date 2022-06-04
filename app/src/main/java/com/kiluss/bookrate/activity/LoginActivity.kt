@@ -1,22 +1,15 @@
 package com.kiluss.bookrate.activity
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.LoginPagerAdapter
 import com.kiluss.bookrate.databinding.ActivityLoginBinding
-import com.kiluss.bookrate.utils.Const
-import com.kiluss.bookrate.utils.Const.Companion.NIGHT_MODE
-import kotlin.math.log
+import com.kiluss.bookrate.utils.Constants.Companion.NIGHT_MODE
 
 class LoginActivity : AppCompatActivity() {
     private var backPressPreviousState: Boolean = false

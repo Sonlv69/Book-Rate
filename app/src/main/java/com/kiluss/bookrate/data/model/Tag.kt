@@ -9,5 +9,5 @@ data class Tag(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("description") var description: String? = null,
-    @SerializedName("books") var books: ArrayList<Tags>? = arrayListOf(),
+    @SerializedName("books") var tags: ArrayList<Tags>? = arrayListOf(),
 ): Parcelable

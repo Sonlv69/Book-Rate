@@ -40,7 +40,7 @@ class BookPreviewAdapter(
     }
 
     inner class BookPreviewHolder(
-        val binding: ItemBookPreviewBinding,
+        val binding: ItemBookPreviewBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindView(bookModel: BookModel) {

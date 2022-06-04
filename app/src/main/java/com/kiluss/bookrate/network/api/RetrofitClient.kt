@@ -1,16 +1,14 @@
 package com.kiluss.bookrate.network.api
 
 import android.content.Context
-import com.kiluss.bookrate.utils.Const.Companion.API_URL
-import com.kiluss.bookrate.utils.Const.Companion.BEARER
+import com.kiluss.bookrate.utils.Constants.Companion.API_URL
+import com.kiluss.bookrate.utils.Constants.Companion.BEARER
 import com.kiluss.bookrate.utils.SingletonHolder
 import okhttp3.OkHttpClient
-import okhttp3.Protocol
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
-import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -27,21 +25,11 @@ class RetrofitClient private constructor(private val context: Context) {
     }
 
     fun getClientAuthorized(token: String): Retrofit {
-        val protocols: ArrayList<Protocol?> = object : ArrayList<Protocol?>() {
-            init {
-                add(Protocol.HTTP_1_1) // <-- The only protocol used
-                //add(Protocol.HTTP_2)
-            }
-        }
         return Retrofit.Builder()
             .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 unSafeOkHttpClient()
-//                    .connectTimeout(20L, TimeUnit.SECONDS)
-//                    .writeTimeout  (20L, TimeUnit.SECONDS)
-//                    .readTimeout   (20L, TimeUnit.SECONDS)
-//                    .protocols(protocols)
                     .authenticator(TokenAuthenticator(BEARER, token))
                     .addInterceptor(ResponseHeaderInterceptor(context)).build()
             )

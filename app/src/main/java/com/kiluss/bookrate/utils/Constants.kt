@@ -1,6 +1,6 @@
 package com.kiluss.bookrate.utils
 
-class Const {
+class Constants {
     companion object {
         const val EXTRA_MESSAGE = "com.kiluss.bookrate.MESSAGE"
         const val API_URL = "https://reviewbook18.herokuapp.com/api/"
@@ -13,5 +13,7 @@ class Const {
         const val JSON_DATE = "T00:00:00.00Z"
         const val FORMAT_DATE_ISO1 = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         const val FORMAT_DATE_ISO2 = "yyyy-MM-dd'T'HH:mm:sss'Z'"
+        const val VIEW_TYPE_ITEM = 0
+        const val VIEW_TYPE_LOADING = 1
     }
 }

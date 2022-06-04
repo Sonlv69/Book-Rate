@@ -10,7 +10,8 @@ data class Reviews(
     @SerializedName("iD_Acc") var iDAcc: Int? = null,
     @SerializedName("iD_Book") var iDBook: Int? = null,
     @SerializedName("content") var content: String? = null,
+    @SerializedName("rate") var rate: Int? = null,
     @SerializedName("date") var date: String? = null,
-    @SerializedName("book") var book: String? = null,
+    @SerializedName("account") var account: Account? = Account(),
     @SerializedName("reviewChildrens") var reviewChildrens: ArrayList<ReviewChildrens>? = arrayListOf()
 ) : Parcelable

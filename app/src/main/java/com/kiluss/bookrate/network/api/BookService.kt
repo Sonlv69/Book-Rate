@@ -38,7 +38,7 @@ interface BookService {
     ): Call<Account>
 
     @GET("Book")
-    fun getAllBooks(): Call<ArrayList<BookModel>>
+    fun getAllBooks(@Query("page") page: Int): Call<ArrayList<BookModel?>>
 
     @GET("Book/{id}")
     fun getBookById(
@@ -50,10 +50,37 @@ interface BookService {
         @Path("id") id: Int
     ): Call<BookRate>
 
-    @POST("Book/CreateOrUpdateRate")
-    fun createOrUpdateRate(
+    @POST("Book/Review")
+    fun createReview(
         @Body params: RequestBody
     ) : Call<Any>
+
+    @PUT("Book/Review/{id}")
+    fun putReview(
+        @Path("id") id: Int,
+        @Body params: RequestBody
+    ): Call<Any>
+
+    @DELETE("Book/Review/{id}")
+    fun deleteReview(
+        @Path("id") id: Int
+    ): Call<Unit>
+
+    @POST("Book/Review/Reply")
+    fun postReply(
+        @Body params: RequestBody
+    ): Call<Any>
+
+    @PUT("Book/Review/Reply/{id}")
+    fun putReply(
+        @Path("id") id: Int,
+        @Body params: RequestBody
+    ): Call<Any>
+
+    @DELETE("Book/Review/Reply/{id}")
+    fun deleteReply(
+        @Path("id") id: Int
+    ): Call<Unit>
 
     @GET("Author/{id}")
     fun getAuthorInfo(

@@ -8,25 +8,21 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.adapter.BookPreviewAdapter
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
-import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.data.model.Author
 import com.kiluss.bookrate.data.model.BookModel
 import com.kiluss.bookrate.data.model.LoginResponse
 import com.kiluss.bookrate.databinding.ActivityAuthorProfileBinding
-import com.kiluss.bookrate.databinding.ActivityBookDetailBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.MessageFormat
 
 class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
     private lateinit var binding: ActivityAuthorProfileBinding

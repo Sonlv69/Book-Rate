@@ -9,12 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#ffcb99</color>
     <color name="colorPrimaryDark">#ffcb99</color>
-    <color name="colorPrimaryDarker">#FFB46F</color>
+    <color name="colorPrimaryDarker">#E68B36</color>
     <color name="colorPrimaryDarker_2">#FF9535</color>
     <color name="colorAccent">#009688</color>
     <color name="green">#39FF01</color>
     <color name="darkGreen">#5EC542</color>
-    <color name="colorBackground">#555555</color>
+    <color name="colorBackground">#333333</color>
     <color name="colorBlueText">#8785FD</color>
 
     <!--colors for night mode-->

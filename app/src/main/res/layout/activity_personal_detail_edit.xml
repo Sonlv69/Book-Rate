@@ -68,19 +68,6 @@
                     android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
-
-
-                <EditText
-                    android:id="@+id/edtDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvDisplayName"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginHorizontal="40dp"
-                    android:layout_marginTop="10dp"
-                    android:text="&quot;Những người hay nói đạo lý thường sống rất đẹp&quot; - Anh-xtanh"
-                    android:textColor="#fff"
-                    android:textSize="16sp" />
             </RelativeLayout>
 
 
@@ -124,47 +111,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvStageNameLabel" />
 
                 <TextView
-                    android:id="@+id/tvReviewed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Email: "
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtFullName" />
-
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="kiluss2@gmail.com"
-                    app:layout_constraintLeft_toRightOf="@+id/tvReviewed"
-                    app:layout_constraintStart_toStartOf="@+id/tvReviewed"
-                    app:layout_constraintTop_toBottomOf="@+id/tvReviewed" />
-
-                <TextView
-                    android:id="@+id/tvGenderLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Gender: "
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
-
-                <EditText
-                    android:id="@+id/edtGender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_marginTop="9dp"
-                    android:text="Male"
-                    app:layout_constraintLeft_toRightOf="@+id/tvGenderLabel"
-                    app:layout_constraintStart_toStartOf="@+id/tvGenderLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/tvGenderLabel" />
-
-                <TextView
                     android:id="@+id/tvBirthDayLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -173,7 +119,7 @@
                     android:text="Birth Day: "
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtGender" />
+                    app:layout_constraintTop_toBottomOf="@+id/edtFullName" />
 
                 <TextView
                     android:id="@+id/tvBirthDayPicker"

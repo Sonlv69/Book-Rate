@@ -17,7 +17,7 @@ import com.kiluss.bookrate.activity.LoginActivity
 import com.kiluss.bookrate.activity.PersonalDetailActivity
 import com.kiluss.bookrate.activity.PersonalDetailEditActivity
 import com.kiluss.bookrate.databinding.FragmentPersonalBinding
-import com.kiluss.bookrate.utils.Const.Companion.NIGHT_MODE
+import com.kiluss.bookrate.utils.Constants.Companion.NIGHT_MODE
 import com.kiluss.bookrate.viewmodel.MainActivityViewModel
 
 

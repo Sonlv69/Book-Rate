@@ -11,5 +11,5 @@ data class ReviewChildrens(
     @SerializedName("content") var content: String? = null,
     @SerializedName("date") var date: String? = null,
     @SerializedName("id_parent") var idParent: Int? = null,
-    @SerializedName("reviewParent") var reviewParent: String? = null
+    @SerializedName("account") var account: Account? = Account()
 ) : Parcelable

@@ -14,14 +14,14 @@
     <string name="prompt_username_confirm">Confirm Email</string>
     <string name="prompt_password_confirm">Confirm Password</string>
     <string name="textview_text_settings">Settings</string>
-    <string name="textview_text_signout">Signout</string>
+    <string name="textview_text_signout">Sign out</string>
     <string name="sherlock_text_title">Sherlock</string>
     <string name="your_bookshelves_is_empty">Your bookshelves is empty.</string>
     <string name="saved_login_account_key">Access token key</string>
     <string name="is_sign_in_key">Is sign in key</string>
     <string name="permission_denied">Permission Denied</string>
     <string name="text_following">{0,choice,0#No following|1#1 following|1&lt;{0} followings}</string>
-    <string name="text_followed">{0,choice,0#No followed|0&lt;{0} followed}</string>
+    <string name="text_follower">{0,choice,0#No follower|1#1 follower|1&lt;{0} followers}</string>
     <string name="by_author_text">By <u><i>%s</i></u></string>
     <string name="publish_by_text">Publish by <u><i>%s</i></u></string>
 

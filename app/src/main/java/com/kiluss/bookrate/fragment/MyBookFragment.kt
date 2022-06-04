@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kiluss.bookrate.utils.Const.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
 import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.activity.MyBookSearchActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapter

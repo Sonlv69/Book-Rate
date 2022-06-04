@@ -35,15 +35,31 @@
             app:layout_constraintStart_toEndOf="@+id/ivCommentAvatar"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvCommentName"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:text="Le Son"
-                android:textSize="@dimen/textview_text_book_preview_title"
-                android:textStyle="bold" />
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/tvCommentName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/ivMore"
+                    android:ellipsize="end"
+                    android:text="Le Son"
+                    android:textSize="@dimen/textview_text_book_preview_title"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_more"
+                    app:tint="@color/colorBlueText" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tvComment"

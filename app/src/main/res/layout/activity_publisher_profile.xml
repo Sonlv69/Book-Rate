@@ -102,7 +102,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Not set"
                 app:layout_constraintLeft_toRightOf="@+id/tvEmailLabel"
                 app:layout_constraintTop_toTopOf="@+id/tvEmailLabel" />
 
@@ -125,7 +124,6 @@
                 android:layout_margin="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Not set"
                 app:layout_constraintLeft_toRightOf="@+id/tvTelephoneLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvEmailLabel" />
 
@@ -148,7 +146,6 @@
                 android:layout_margin="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Not set"
                 app:layout_constraintLeft_toRightOf="@+id/tvWebsiteLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvTelephone" />
 
@@ -171,7 +168,6 @@
                 android:layout_margin="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Not set"
                 app:layout_constraintLeft_toRightOf="@+id/tvAddressLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvWebsite" />
 

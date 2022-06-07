@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MostRecentHomeFragment : Fragment(), BookPreviewAdapterInterface {
+class AllBookHomeFragment : Fragment(), BookPreviewAdapterInterface {
     private lateinit var layoutManager: GridLayoutManager
     private var bookLists: ArrayList<BookModel?> = arrayListOf()
     private var _binding: FragmentMostRecentHomeBinding? = null

@@ -5,7 +5,7 @@ class Constants {
         const val EXTRA_MESSAGE = "com.kiluss.bookrate.MESSAGE"
         const val API_URL = "https://reviewbook18.herokuapp.com/api/"
         const val NIGHT_MODE = "night_mode"
-        const val FOLLOWED = "Followed"
+        const val FOLLOWER = "Follower"
         const val FOLLOWING = "Following"
         const val BEARER = "Bearer"
         const val AUTHENTICATION_IS_REQUIRED_CODE = 401

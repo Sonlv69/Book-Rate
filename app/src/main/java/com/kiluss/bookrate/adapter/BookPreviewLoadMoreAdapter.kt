@@ -35,7 +35,7 @@ class BookPreviewLoadMoreAdapter(
         fun bindView(bookModel: BookModel) {
             binding.tvTitleBookPreview.text = bookModel.name
             //binding.tvBookState.text = bookModel.state
-            if (bookModel.picture != null) {
+            if (bookModel.picture != null && bookModel.picture != "" && bookModel.picture != "null") {
                 binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(bookModel.picture.toString()))
             } else {
                 binding.ivBookPreview.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.cover_not_available))

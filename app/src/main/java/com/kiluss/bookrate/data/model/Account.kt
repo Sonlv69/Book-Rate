@@ -14,8 +14,8 @@ data class Account(
     @SerializedName("picture") var picture: String? = null,
     @SerializedName("iD_Role") var iDRole: Int? = null,
     @SerializedName("role") var role: Role? = Role(),
-    @SerializedName("myFollowings") var myFollowings: ArrayList<MyFollowings>? = arrayListOf(),
-    @SerializedName("myFollowers") var myFollowers: ArrayList<MyFollowers>? = arrayListOf(),
+    @SerializedName("myFollowings") var myFollowings: ArrayList<FollowModel>? = arrayListOf(),
+    @SerializedName("myFollowers") var myFollowers: ArrayList<FollowModel>? = arrayListOf(),
     @SerializedName("myBooks") var myBooks: ArrayList<MyBook>? = arrayListOf(),
     @SerializedName("proposes") var proposes: ArrayList<Proposes>? = arrayListOf()
 ) : Parcelable

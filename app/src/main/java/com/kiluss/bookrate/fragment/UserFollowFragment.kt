@@ -49,7 +49,7 @@ class UserFollowFragment : Fragment(), FollowAdapter.FollowAdapterInterface {
     }
 
     override fun onFollowClick(adapterPosition: Int, person: FollowModel) {
-        person.isFollowing = !person.isFollowing
+        //person.isFollowing = !person.isFollowing
         followAdapter.notifyItemChanged(adapterPosition)
     }
 

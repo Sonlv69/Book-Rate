@@ -97,4 +97,27 @@ interface BookService {
         @Path("id") id: Int
     ): Call<Tag>
 
+    @POST("Account/Follow")
+    fun postFollow(
+        @Body params: RequestBody
+    ): Call<Any>
+
+    @HTTP(method = "DELETE", path = "Account/Follow", hasBody = true)
+    fun deleteFollow(
+        @Body params: RequestBody
+    ): Call<Unit>
+
+    @GET("Tag")
+    fun getAllTag(): Call<ArrayList<Tag>>
+
+    @GET("Author")
+    fun getAllAuthor(): Call<ArrayList<Author>>
+
+    @GET("Publisher")
+    fun getAllPublisher(): Call<ArrayList<Publisher>>
+
+    @POST("Book/Propose")
+    fun postRequestBook(
+        @Body params: RequestBody
+    ): Call<BookRequest>
 }

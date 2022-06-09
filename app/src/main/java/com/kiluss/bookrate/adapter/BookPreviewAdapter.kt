@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.kiluss.bookrate.network.api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class BookPreviewAdapter(
     private val bookLists: List<BookModel>,
@@ -46,8 +48,12 @@ class BookPreviewAdapter(
         fun bindView(bookModel: BookModel) {
             binding.tvTitleBookPreview.text = bookModel.name
             //binding.tvBookState.text = bookModel.state
-            if (bookModel.picture != null) {
-                binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(bookModel.picture.toString()))
+            if (bookModel.picture != null && bookModel.picture != "" && bookModel.picture != "null") {
+                try {
+                    binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(bookModel.picture.toString()))
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
             }
             if (bookModel.author != null) {
                 binding.tvAuthor.text = bookModel.author!!.name.toString()

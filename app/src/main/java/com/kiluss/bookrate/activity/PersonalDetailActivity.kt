@@ -9,7 +9,6 @@ import android.util.Base64
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
@@ -20,18 +19,20 @@ import com.kiluss.bookrate.databinding.ActivityPersonalDetailBinding
 import com.kiluss.bookrate.fragment.UserFollowFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
-import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWED
+import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWER
 import com.kiluss.bookrate.utils.Constants.Companion.FOLLOWING
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.MessageFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PersonalDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPersonalDetailBinding
-    private lateinit var followList: List<FollowModel>
+    private lateinit var followerList: ArrayList<FollowModel>
+    private lateinit var followingList: ArrayList<FollowModel>
     private lateinit var api: BookService
     private lateinit var account: Account
 
@@ -41,25 +42,10 @@ class PersonalDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.svMain.visibility = View.INVISIBLE
         setUpApi()
-        followList = arrayListOf(
-            FollowModel("", "KiluSs", 12, true),
-            FollowModel("", "KiluSs", 12, false),
-            FollowModel("", "KiluSs", 12, true),
-            FollowModel("", "KiluSs", 12, false),
-            FollowModel("", "KiluSs", 12, true),
-            FollowModel("", "KiluSs", 12, false),
-        )
-        binding.tvFollowed.setOnClickListener {
-            addFragmentToActivity(
-                UserFollowFragment.newInstance(followList as ArrayList<FollowModel>),
-                UserFollowFragment().toString()
-            )
-            supportActionBar?.title = FOLLOWED
-        }
 
         binding.tvFollowing.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followList as ArrayList<FollowModel>),
+                UserFollowFragment.newInstance(followerList as ArrayList<FollowModel>),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWING
@@ -118,6 +104,22 @@ class PersonalDetailActivity : AppCompatActivity() {
     }
 
     private fun updateUi(info: Account) {
+        account.myFollowers?.let { followerList = it}
+        account.myFollowings?.let { followingList = it}
+        binding.tvFollowed.setOnClickListener {
+            addFragmentToActivity(
+                UserFollowFragment.newInstance(followerList),
+                UserFollowFragment().toString()
+            )
+            supportActionBar?.title = FOLLOWER
+        }
+        binding.tvFollowing.setOnClickListener {
+            addFragmentToActivity(
+                UserFollowFragment.newInstance(followingList),
+                UserFollowFragment().toString()
+            )
+            supportActionBar?.title = FOLLOWING
+        }
         binding.tvDisplayName.text = info.userName
         info.fullName?.let { binding.tvFullName.text = info.fullName }
         info.address?.let { binding.tvAddress.text = info.address }

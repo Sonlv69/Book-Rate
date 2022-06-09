@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayoutHome, binding.viewPagerHome) { tab, position ->
             when(position) {
-                0 -> tab.text = "Most recent"
+                0 -> tab.text = "All books"
                 1 -> tab.text = "Popular"
                 2 -> tab.text = "Most Rate"
             }

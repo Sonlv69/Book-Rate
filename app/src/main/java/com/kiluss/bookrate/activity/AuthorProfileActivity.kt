@@ -74,8 +74,8 @@ class AuthorProfileActivity : AppCompatActivity(), BookPreviewAdapterInterface {
     }
 
     private fun updateUi(info: Author) {
-        info.name?.let { binding.tvDisplayName.text = it }
-        info.stageName?.let { binding.tvStageName.text = it }
+        info.name?.let { binding.tvFullName.text = it }
+        info.stageName?.let { binding.tvDisplayName.text = it }
         info.birthday?.let { binding.tvBirthDay.text = convertDateTime(it) }
         bookLists = if (author.books != null) {
             author.books!!

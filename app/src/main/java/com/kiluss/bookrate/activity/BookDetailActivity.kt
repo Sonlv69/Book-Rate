@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -86,6 +87,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                     }
                     response.isSuccessful -> {
                         response.body()?.let {
+                            Log.e("response", response.body()!!.toString())
                             book = response.body()!!
                             setUpBookUi(isShowReply, idReview)
                         }
@@ -114,7 +116,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         }
         binding.tvBookTitle.text = book.name
         supportActionBar?.title = book.name
-        if (book.picture != null) {
+        if (book.picture != null && book.picture != "" && book.picture != "null") {
             binding.ivCover.setImageBitmap(base64ToBitmapDecode(book.picture.toString()))
         }
         val authorString =
@@ -196,6 +198,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                                 "Rated!",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            binding.edtReview.setText("")
                             getBookById(book.id.toString(), false, this@BookDetailActivity.idReview)
                         }
                     }
@@ -213,10 +216,12 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
     }
 
     private fun putReview() {
-        apiAuthorized.putReview(findMyReviewId(), createRequestBodyForPutReview(
-            binding.rbRating.rating.toInt(),
-            binding.edtReview.text.toString()
-        )).enqueue(object : Callback<Any?> {
+        apiAuthorized.putReview(
+            findMyReviewId(), createRequestBodyForPutReview(
+                binding.rbRating.rating.toInt(),
+                binding.edtReview.text.toString()
+            )
+        ).enqueue(object : Callback<Any?> {
             override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
                 when {
                     response.code() == 404 -> {
@@ -242,6 +247,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                         getBookById(book.id.toString(), false, idReview)
                     }
                 }
+                binding.edtReview.setText("")
             }
 
             override fun onFailure(call: Call<Any?>, t: Throwable) {
@@ -359,37 +365,38 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
 
     override fun onSendReplyClick(idParent: Int, comment: String) {
         idReview = idParent
-        apiAuthorized.postReply(createRequestBodyForReply(idParent, comment)).enqueue(object : Callback<Any?> {
-            override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
-                when {
-                    response.code() == 404 -> {
-                        Toast.makeText(
-                            applicationContext,
-                            "Url is not exist",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    response.code() == 500 -> {
-                        Toast.makeText(
-                            applicationContext,
-                            "Internal error",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    response.isSuccessful -> {
-                        getBookById(book.id.toString(), true, idReview)
+        apiAuthorized.postReply(createRequestBodyForReply(idParent, comment))
+            .enqueue(object : Callback<Any?> {
+                override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
+                    when {
+                        response.code() == 404 -> {
+                            Toast.makeText(
+                                applicationContext,
+                                "Url is not exist",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        response.code() == 500 -> {
+                            Toast.makeText(
+                                applicationContext,
+                                "Internal error",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        response.isSuccessful -> {
+                            getBookById(book.id.toString(), true, idReview)
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<Any?>, t: Throwable) {
-                Toast.makeText(
-                    applicationContext,
-                    t.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+                override fun onFailure(call: Call<Any?>, t: Throwable) {
+                    Toast.makeText(
+                        applicationContext,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
     }
 
     override fun onDeleteReview(id: Int) {
@@ -432,9 +439,11 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
             edtEditReply.setText(currentContent)
             btnEditReply.setOnClickListener {
                 llEditReply.visibility = View.GONE
-                apiAuthorized.putReply(id, createRequestBodyForPutReply(
-                    binding.edtEditReply.text.toString(), idParent
-                )).enqueue(object : Callback<Any?> {
+                apiAuthorized.putReply(
+                    id, createRequestBodyForPutReply(
+                        binding.edtEditReply.text.toString(), idParent
+                    )
+                ).enqueue(object : Callback<Any?> {
                     override fun onResponse(call: Call<Any?>, response: Response<Any?>) {
                         when {
                             response.code() == 404 -> {

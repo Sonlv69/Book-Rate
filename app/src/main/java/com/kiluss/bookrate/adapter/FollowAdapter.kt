@@ -41,26 +41,20 @@ class FollowAdapter(
         fun bindView(person: FollowModel) {
             Log.e("followAdapter", person.toString())
             binding.ivAvatar.let {
-                Glide
-                    .with(context)
-                    .load(person.avatarUrl)
-                    .override(40, 40)
-                    .placeholder(R.drawable.user_dp)
-                    .override(40, 40)
-                    .into(it)
+
             }
-            binding.tvName.text = person.name
-            binding.tvFollower.text = "${person.follower} followers"
-            if (!person.isFollowing) {
-                binding.btnFollowState.background = context.getDrawable(R.drawable.button_bg_outlined)
-                binding.btnFollowState.text = "Follow"
-            } else {
-                binding.btnFollowState.background = context.getDrawable(R.drawable.button_bg)
-                binding.btnFollowState.text = "Following"
-            }
-            binding.btnFollowState.setOnClickListener {
-                followAdapterAdapterInterface.onFollowClick(adapterPosition, person)
-            }
+            binding.tvName.text = person.iDFollower.toString()
+            //binding.tvFollower.text = "${person.follower} followers"
+//            if (!person.isFollowing) {
+//                binding.btnFollowState.background = context.getDrawable(R.drawable.button_bg_outlined)
+//                binding.btnFollowState.text = "Follow"
+//            } else {
+//                binding.btnFollowState.background = context.getDrawable(R.drawable.button_bg)
+//                binding.btnFollowState.text = "Following"
+//            }
+//            binding.btnFollowState.setOnClickListener {
+//                followAdapterAdapterInterface.onFollowClick(adapterPosition, person)
+//            }
         }
     }
 }

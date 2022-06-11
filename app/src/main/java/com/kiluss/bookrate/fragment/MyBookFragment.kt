@@ -17,8 +17,7 @@ import com.kiluss.bookrate.activity.BookDetailActivity
 import com.kiluss.bookrate.activity.MyBookSearchActivity
 import com.kiluss.bookrate.adapter.BookPreviewAdapterInterface
 import com.kiluss.bookrate.adapter.MyBookPreviewAdapter
-import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.MyBookState
+import com.kiluss.bookrate.data.model.*
 import com.kiluss.bookrate.databinding.FragmentMyBookBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
@@ -58,6 +57,7 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         }
         bookLists = mutableListOf()
         getMyBook()
+        getCategory()
         return binding.root
     }
 
@@ -70,6 +70,21 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         val json: String? =
             sharedPref.getString(requireContext().getString(R.string.saved_login_account_key), "")
         return gson.fromJson(json, LoginResponse::class.java)
+    }
+
+    private fun getCategory() {
+
+    }
+
+    private fun setUpCategoryLayout() {
+        if (_binding != null) {
+            binding.apply {
+                llAllCategory.setOnClickListener {
+                    AddCategoryDialogFragment()
+                        .show(requireActivity().supportFragmentManager, "Category")
+                }
+            }
+        }
     }
 
     private fun getMyBook() {
@@ -103,11 +118,13 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
                     response.isSuccessful -> {
                         response.body()?.let {
                             bookLists = it
-                            setUpRecyclerView()
-                        }
-                        shouldShowEmptyBookString()
-                        binding.llBookState.setOnClickListener {
-                            showOverflowMenuSearchBookState()
+                            if (_binding != null) {
+                                setUpRecyclerView()
+                                shouldShowEmptyBookString()
+                                binding.llBookState.setOnClickListener {
+                                    showOverflowMenuSearchBookState()
+                                }
+                            }
                         }
                     }
                 }
@@ -309,6 +326,7 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         binding.rcvMyBook.layoutManager = GridLayoutManager(context, 2)
         bookAdapter = MyBookPreviewAdapter(bookLists, this.requireContext(), this)
         binding.rcvMyBook.adapter = bookAdapter
+        setUpCategoryLayout()
     }
 
     private fun shouldShowEmptyBookString() {

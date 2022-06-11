@@ -20,6 +20,9 @@ interface BookService {
         @Path("id") id: String
     ): Call<Account>
 
+    @GET("Account/MyInforHasMyTag")
+    fun getMyAccountInfo(): Call<AccountHasMytag>
+
     @Headers("Accept: text/plain")
     @PUT("Account/information/{id}")
     fun changeMyAccountInfo(
@@ -41,6 +44,16 @@ interface BookService {
     @HTTP(method = "DELETE", path = "Account/Follow", hasBody = true)
     fun deleteFollow(
         @Body params: RequestBody
+    ): Call<Unit>
+
+    @POST("Account/MyTag/{id}")
+    fun postMyTag(
+        @Path("id") id: Int
+    ): Call<Any>
+
+    @DELETE("Account/MyTag/{id}")
+    fun deleteMyTag(
+        @Path("id") id: Int
     ): Call<Unit>
 
     //author

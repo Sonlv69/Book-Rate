@@ -37,6 +37,7 @@
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/activity_publisher_profile.xml" value="0.2" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/activity_user_detail.xml" value="0.264" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_account_following.xml" value="0.38697916666666665" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_add_category_dialog.xml" value="0.1640625" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_book_request.xml" value="0.25" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_category_dialog.xml" value="0.264" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_home.xml" value="0.176" />
@@ -48,6 +49,7 @@
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_sign_up.xml" value="0.23731884057971014" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_trending_home.xml" value="0.14375" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/fragment_user_followed.xml" value="0.2" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_add_category.xml" value="0.1640625" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_book_preview.xml" value="0.2" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_category_name.xml" value="0.15260416666666668" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_category_request.xml" value="0.2635416666666667" />
@@ -55,6 +57,7 @@
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_follow.xml" value="0.2" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_reply_review.xml" value="0.2359375" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_review.xml" value="0.2359375" />
+        <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_string_request.xml" value="0.1640625" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/item_text_string.xml" value="0.15260416666666668" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/progress_loading.xml" value="0.121875" />
         <entry key="..\:/Source Code/Android/Android Studio/Do an/Book Rate/app/src/main/res/layout/shimmer_book_preview.xml" value="0.23777173913043478" />

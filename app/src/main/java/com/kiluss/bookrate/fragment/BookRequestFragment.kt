@@ -353,8 +353,10 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                         }
                     }
                 }
-                binding.lnMain.visibility = View.VISIBLE
-                binding.pbLoading.visibility = View.GONE
+                if (_binding != null) {
+                    binding.lnMain.visibility = View.VISIBLE
+                    binding.pbLoading.visibility = View.GONE
+                }
             }
 
             override fun onFailure(call: Call<ArrayList<Tag>?>, t: Throwable) {
@@ -363,8 +365,10 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                     t.message,
                     Toast.LENGTH_SHORT
                 ).show()
-                binding.lnMain.visibility = View.VISIBLE
-                binding.pbLoading.visibility = View.GONE
+                if (_binding != null) {
+                    binding.lnMain.visibility = View.VISIBLE
+                    binding.pbLoading.visibility = View.GONE
+                }
             }
         })
 

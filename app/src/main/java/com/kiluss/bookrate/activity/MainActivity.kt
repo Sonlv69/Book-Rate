@@ -1,5 +1,6 @@
 package com.kiluss.bookrate.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -12,19 +13,31 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 import com.kiluss.bookrate.R
+import com.kiluss.bookrate.data.model.LoginResponse
+import com.kiluss.bookrate.data.model.MyBookState
 import com.kiluss.bookrate.databinding.ActivityMainBinding
+import com.kiluss.bookrate.network.api.BookService
+import com.kiluss.bookrate.network.api.RetrofitClient
 import com.kiluss.bookrate.viewmodel.MainActivityViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navFragment: NavController
     private var backPressPreviousState: Boolean = false
     private lateinit var binding: ActivityMainBinding
+    private var bookNumber: Int = 0
     private val viewModel: MainActivityViewModel by viewModels {
         MainActivityViewModel.ViewModelFactory(
             this
         )
     }
+    private lateinit var apiAuthorized: BookService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +54,13 @@ class MainActivity : AppCompatActivity() {
                 supportActionBar?.hide()
             }
         }
+        apiAuthorized = RetrofitClient.getInstance(this).getClientAuthorized(getLoginResponse(this).token.toString())
+            .create(BookService::class.java)
         setUpViewModel()
+        viewModel.getMyBookSize(this)
     }
 
     private fun setUpViewModel() {
-        viewModel.setNotification(this, 12)
         viewModel.notification.observe(this, getNotification)
     }
 
@@ -90,6 +105,11 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMyBookSize(this)
+    }
+
     override fun onBackPressed() {
         val id: Int? = navFragment.currentDestination?.id
         if (id == R.id.homeFragment && !backPressPreviousState) {
@@ -104,5 +124,15 @@ class MainActivity : AppCompatActivity() {
         } else if (id == R.id.homeFragment && backPressPreviousState) {
             super.onBackPressed()
         }
+    }
+
+    private fun getLoginResponse(context: Context) : LoginResponse {
+        val sharedPref = context.getSharedPreferences(
+            context.getString(R.string.saved_login_account_key),
+            Context.MODE_PRIVATE
+        )
+        val gson = Gson()
+        val json: String? = sharedPref.getString(context.getString(R.string.saved_login_account_key), "")
+        return gson.fromJson(json, LoginResponse::class.java)
     }
 }

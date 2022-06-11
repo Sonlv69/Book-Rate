@@ -43,16 +43,16 @@ class BookPreviewLoadMoreAdapter(
             if (bookModel.author != null) {
                 binding.tvAuthor.text = bookModel.author!!.name.toString()
             } else {
-                binding.llAuthor.visibility = View.GONE
+                binding.llAuthor.visibility = View.INVISIBLE
             }
             if (!bookModel.tags.isNullOrEmpty()) {
                 if (bookModel.tags?.get(0) != null) {
                     binding.tvGenre.text = displayCategoryString(bookModel.tags)
                 } else {
-                    binding.llCategory.visibility = View.GONE
+                    binding.llCategory.visibility = View.INVISIBLE
                 }
             } else {
-                binding.llCategory.visibility = View.GONE
+                binding.llCategory.visibility = View.INVISIBLE
             }
             getAndUpdateRate(bookModel.id, context)
             binding.tvPublishTime.text = bookModel.publishedYear.toString()
@@ -60,7 +60,7 @@ class BookPreviewLoadMoreAdapter(
                 bookPreviewAdapterInterface.onItemViewClick(adapterPosition)
             }
             binding.llBookState.setOnClickListener {
-                bookPreviewAdapterInterface.onBookStateClick(adapterPosition, binding.llBookState)
+                bookPreviewAdapterInterface.onBookStateClick(adapterPosition, binding.llBookState, 0)
             }
         }
 

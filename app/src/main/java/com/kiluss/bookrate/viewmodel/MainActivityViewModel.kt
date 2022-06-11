@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.data.model.LoginResponse
+import com.kiluss.bookrate.data.model.MyBookState
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
 import retrofit2.Call
@@ -37,7 +38,8 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     internal val accountInfo: LiveData<Account> = _accountInfo
     private val _loginResponse: MutableLiveData<LoginResponse> by lazy { MutableLiveData<LoginResponse>() }
     internal val loginResponse: LiveData<LoginResponse> = _loginResponse
-    private lateinit var api: BookService
+    private var bookNumber: Int = 0
+    private lateinit var apiAuthorized: BookService
 
     init {
         _loginResponse.value = getLoginResponse(context)
@@ -46,12 +48,15 @@ class MainActivityViewModel(context: Context) : ViewModel() {
 
     internal fun setNotification(context: Context, numberNotify: Int) {
         val navBottomView = (context as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val badgeDrawable: BadgeDrawable? = navBottomView.getBadge(R.id.accountFollowingFragment)
+        val badgeDrawable: BadgeDrawable? = navBottomView.getBadge(R.id.myBookFragment)
         if (badgeDrawable == null) {
-            navBottomView.getOrCreateBadge(R.id.accountFollowingFragment).number = numberNotify
-        } else {
-            val previousValue = badgeDrawable.number
+            if (bookNumber != 0) {
+                navBottomView.getOrCreateBadge(R.id.myBookFragment).number = numberNotify
+            }
+        } else if (bookNumber != 0){
             badgeDrawable.number = numberNotify
+        } else {
+            navBottomView.removeBadge(R.id.myBookFragment)
         }
     }
 
@@ -61,9 +66,9 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     }
 
     internal fun getMyAccount(context: Context) {
-        api = RetrofitClient.getInstance(context).getClientAuthorized(loginResponse.value?.token.toString())
+        apiAuthorized = RetrofitClient.getInstance(context).getClientAuthorized(loginResponse.value?.token.toString())
             .create(BookService::class.java)
-        api.getAccountInfo(loginResponse.value?.id.toString())
+        apiAuthorized.getAccountInfo(loginResponse.value?.id.toString())
             .enqueue(object : Callback<Account?> {
                 override fun onResponse(
                     call: Call<Account?>,
@@ -97,5 +102,27 @@ class MainActivityViewModel(context: Context) : ViewModel() {
         val gson = Gson()
         val json: String? = sharedPref.getString(context.getString(R.string.saved_login_account_key), "")
         return gson.fromJson(json, LoginResponse::class.java)
+    }
+
+    internal fun getMyBookSize(context: Context) {
+        apiAuthorized.getMyBook().enqueue(object : Callback<ArrayList<MyBookState>> {
+            override fun onResponse(
+                call: Call<ArrayList<MyBookState>>,
+                response: Response<ArrayList<MyBookState>>
+            ) {
+                when {
+                    response.isSuccessful -> {
+                        response.body()?.let {
+                            bookNumber = it.size
+                        }
+                        setNotification(context, bookNumber)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<MyBookState>>, t: Throwable) {
+
+            }
+        })
     }
 }

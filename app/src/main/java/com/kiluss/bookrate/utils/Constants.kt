@@ -15,5 +15,9 @@ class Constants {
         const val FORMAT_DATE_ISO2 = "yyyy-MM-dd'T'HH:mm:sss'Z'"
         const val VIEW_TYPE_ITEM = 0
         const val VIEW_TYPE_LOADING = 1
+        const val UN_READ = "UnRead"
+        const val WANT_TO_READ = "Want To Read"
+        const val CURRENTLY_READING = "Currently Reading"
+        const val READ = "Read"
     }
 }

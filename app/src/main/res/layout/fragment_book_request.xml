@@ -77,10 +77,10 @@
                                 android:id="@+id/tvAuthor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxWidth="100dp"
                                 android:layout_marginStart="8dp"
                                 android:ellipsize="end"
                                 android:gravity="center_horizontal"
+                                android:maxWidth="100dp"
                                 android:maxLines="1"
                                 android:text="Author"
                                 android:textSize="@dimen/textview_text_normal_size"
@@ -160,8 +160,8 @@
                                 android:layout_marginStart="8dp"
                                 android:ellipsize="end"
                                 android:gravity="center_horizontal"
-                                android:maxLines="1"
                                 android:maxWidth="100dp"
+                                android:maxLines="1"
                                 android:text="Publisher"
                                 android:textSize="@dimen/textview_text_normal_size"
                                 android:textStyle="bold" />
@@ -282,7 +282,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="10dp"
                             android:hint="or request category"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/iv_send_new_category"
@@ -290,6 +291,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_send"
+
+                            android:visibility="gone"
                             app:tint="@color/colorPrimaryDarker" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +11,21 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kiluss.bookrate.data.model.BookModel
 import com.kiluss.bookrate.data.model.BookRate
+import com.kiluss.bookrate.data.model.MyBookState
 import com.kiluss.bookrate.data.model.Tags
 import com.kiluss.bookrate.databinding.ItemBookPreviewBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
+import com.kiluss.bookrate.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
-class BookPreviewAdapter(
-    private val bookLists: List<BookModel>,
+class MyBookPreviewAdapter(
+    private val bookLists: MutableList<MyBookState>,
     private val context: Context,
     private val bookPreviewAdapterInterface: BookPreviewAdapterInterface
-) : RecyclerView.Adapter<BookPreviewAdapter.BookPreviewHolder>() {
+) : RecyclerView.Adapter<MyBookPreviewAdapter.BookPreviewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookPreviewHolder {
         val binding =
@@ -41,41 +41,76 @@ class BookPreviewAdapter(
         return bookLists.size
     }
 
+    internal fun changeData(books: MutableList<MyBookState>) {
+        bookLists.clear()
+        bookLists.addAll(books)
+        notifyDataSetChanged()
+    }
+
     inner class BookPreviewHolder(
         val binding: ItemBookPreviewBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(bookModel: BookModel) {
-            binding.tvTitleBookPreview.text = bookModel.name
-            //binding.tvBookState.text = bookModel.state
-            if (bookModel.picture != null && bookModel.picture != "" && bookModel.picture != "null") {
-                try {
-                    binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(bookModel.picture.toString()))
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
+        fun bindView(bookModel: MyBookState) {
+            showBookState(bookModel)
+            binding.llBookState.visibility = View.VISIBLE
+            bookModel.book?.apply {
+                binding.tvTitleBookPreview.text = name
+                if (picture != null && picture != "" && picture != "null") {
+                    try {
+                        binding.ivBookPreview.setImageBitmap(base64ToBitmapDecode(picture.toString()))
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
                 }
-            }
-            if (bookModel.author != null) {
-                binding.tvAuthor.text = bookModel.author!!.name.toString()
-            } else {
-                binding.llAuthor.visibility = View.GONE
-            }
-            if (!bookModel.tags.isNullOrEmpty()) {
-                if (bookModel.tags?.get(0) != null) {
-                    binding.tvGenre.text = displayCategoryString(bookModel.tags)
+                if (author != null) {
+                    binding.tvAuthor.text = author!!.name.toString()
                 } else {
-                    binding.llCategory.visibility = View.GONE
+                    binding.llAuthor.visibility = View.INVISIBLE
                 }
-            } else {
-                binding.llCategory.visibility = View.GONE
+                if (!tags.isNullOrEmpty()) {
+                    if (tags?.get(0) != null) {
+                        binding.llCategory.visibility = View.VISIBLE
+                        binding.tvGenre.text = displayCategoryString(tags)
+                    } else {
+                        binding.llCategory.visibility = View.INVISIBLE
+                    }
+                } else {
+                    binding.llCategory.visibility = View.INVISIBLE
+                }
+                getAndUpdateRate(id, context)
+                binding.tvPublishTime.text = publishedYear.toString()
+                binding.root.setOnClickListener {
+                    bookPreviewAdapterInterface.onItemViewClick(adapterPosition)
+                }
+                binding.llBookState.setOnClickListener{
+                    bookModel.statusBook?.let { it1 ->
+                        bookPreviewAdapterInterface.onBookStateClick(adapterPosition, binding.llBookState,
+                            it1
+                        )
+                    }
+                }
             }
-            getAndUpdateRate(bookModel.id, context)
-            binding.tvPublishTime.text = bookModel.publishedYear.toString()
-            binding.root.setOnClickListener {
-                bookPreviewAdapterInterface.onItemViewClick(adapterPosition)
-            }
-            binding.llBookState.setOnClickListener{
-                bookPreviewAdapterInterface.onBookStateClick(adapterPosition, binding.llBookState, 0)
+        }
+
+        private fun showBookState(book: MyBookState) {
+            book.apply {
+                binding.apply {
+                    when (statusBook) {
+                        1 -> {
+                            tvBookState.text = Constants.WANT_TO_READ
+                        }
+                        2 -> {
+                            tvBookState.text = Constants.CURRENTLY_READING
+                        }
+                        3 -> {
+                            tvBookState.text = Constants.READ
+                        }
+                        else -> {
+                            tvBookState.text = Constants.UN_READ
+                        }
+                    }
+                }
             }
         }
 

@@ -28,7 +28,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.MessageFormat
 
-
 class UserDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailBinding
     private lateinit var followerList: ArrayList<FollowModel>
@@ -51,7 +50,7 @@ class UserDetailActivity : AppCompatActivity() {
 
         binding.tvFollowing.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList as ArrayList<FollowModel>),
+                UserFollowFragment.newInstance(followerList),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWING

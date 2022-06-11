@@ -9,10 +9,10 @@
         android:id="@+id/myBookFragment"
         android:title="Bookshelves"
         android:icon="@drawable/ic_books"/>
-    <item
-        android:id="@+id/accountFollowingFragment"
-        android:title="Following"
-        android:icon="@drawable/ic_following"/>
+<!--    <item-->
+<!--        android:id="@+id/accountFollowingFragment"-->
+<!--        android:title="Following"-->
+<!--        android:icon="@drawable/ic_following"/>-->
     <item
         android:id="@+id/bookRequestFragment"
         android:title="Request"

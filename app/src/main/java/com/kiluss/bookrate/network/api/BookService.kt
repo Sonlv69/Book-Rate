@@ -7,12 +7,8 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface BookService {
-    @Headers("Accept: application/json")
-    @POST("User/Login")
-    fun login(
-        @Body params: RequestBody
-    ): Call<LoginResponse>
 
+    //account
     @Headers("Accept: text/plain")
     @POST("Account")
     fun register(
@@ -37,6 +33,26 @@ interface BookService {
         @Body params: RequestBody
     ): Call<Account>
 
+    @POST("Account/Follow")
+    fun postFollow(
+        @Body params: RequestBody
+    ): Call<Any>
+
+    @HTTP(method = "DELETE", path = "Account/Follow", hasBody = true)
+    fun deleteFollow(
+        @Body params: RequestBody
+    ): Call<Unit>
+
+    //author
+    @GET("Author")
+    fun getAllAuthor(): Call<ArrayList<Author>>
+
+    @GET("Author/{id}")
+    fun getAuthorInfo(
+        @Path("id") id: Int
+    ): Call<Author>
+
+    //book
     @GET("Book")
     fun getAllBooks(@Query("page") page: Int): Call<ArrayList<BookModel?>>
 
@@ -53,7 +69,7 @@ interface BookService {
     @POST("Book/Review")
     fun createReview(
         @Body params: RequestBody
-    ) : Call<Any>
+    ): Call<Any>
 
     @PUT("Book/Review/{id}")
     fun putReview(
@@ -82,42 +98,51 @@ interface BookService {
         @Path("id") id: Int
     ): Call<Unit>
 
-    @GET("Author/{id}")
-    fun getAuthorInfo(
-        @Path("id") id: Int
-    ): Call<Author>
+    @POST("Book/Propose")
+    fun postRequestBook(
+        @Body params: RequestBody
+    ): Call<BookRequest>
+
+    //publisher
+    @GET("Publisher")
+    fun getAllPublisher(): Call<ArrayList<Publisher>>
 
     @GET("Publisher/{id}")
     fun getPublisherInfo(
         @Path("id") id: Int
     ): Call<Publisher>
 
+    //tag
     @GET("Tag/{id}")
     fun getTagInfo(
         @Path("id") id: Int
     ): Call<Tag>
 
-    @POST("Account/Follow")
-    fun postFollow(
-        @Body params: RequestBody
-    ): Call<Any>
-
-    @HTTP(method = "DELETE", path = "Account/Follow", hasBody = true)
-    fun deleteFollow(
-        @Body params: RequestBody
-    ): Call<Unit>
-
     @GET("Tag")
     fun getAllTag(): Call<ArrayList<Tag>>
 
-    @GET("Author")
-    fun getAllAuthor(): Call<ArrayList<Author>>
-
-    @GET("Publisher")
-    fun getAllPublisher(): Call<ArrayList<Publisher>>
-
-    @POST("Book/Propose")
-    fun postRequestBook(
+    //user
+    @Headers("Accept: application/json")
+    @POST("User/Login")
+    fun login(
         @Body params: RequestBody
-    ): Call<BookRequest>
+    ): Call<LoginResponse>
+
+    @GET("User/MyBook")
+    fun getMyBook(): Call<ArrayList<MyBookState>>
+
+    @POST("User/MyBook")
+    fun postMyBook(
+        @Body params: RequestBody
+    ): Call<MyBookState>
+
+    @PUT("User/MyBook")
+    fun putMyBook(
+        @Body params: RequestBody
+    ): Call<MyBookState>
+
+    @DELETE("User/MyBookByIdBook/{id}")
+    fun deleteMyBookById(
+        @Path("id") id: Int
+    ): Call<Unit>
 }

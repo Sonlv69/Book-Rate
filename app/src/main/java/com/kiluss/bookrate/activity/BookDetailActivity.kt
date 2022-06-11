@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,11 @@ import com.kiluss.bookrate.fragment.CategoryDialogFragment
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
 import com.kiluss.bookrate.utils.Constants.Companion.API_URL
+import com.kiluss.bookrate.utils.Constants.Companion.CURRENTLY_READING
 import com.kiluss.bookrate.utils.Constants.Companion.EXTRA_MESSAGE
+import com.kiluss.bookrate.utils.Constants.Companion.READ
+import com.kiluss.bookrate.utils.Constants.Companion.UN_READ
+import com.kiluss.bookrate.utils.Constants.Companion.WANT_TO_READ
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -42,7 +47,8 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
     private lateinit var apiUnauthorized: BookService
     private lateinit var apiAuthorized: BookService
     private lateinit var book: BookModel
-    private var idReview: Int = -1
+    private var bookState = 0
+    private var idReview = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailBinding.inflate(layoutInflater)
@@ -59,6 +65,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         apiAuthorized = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token!!)
             .create(BookService::class.java)
         getBookById(bookId.toString(), false, idReview)
+        getMyBook()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -213,6 +220,9 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                 }
             })
         }
+        binding.llBookState.setOnClickListener {
+            showOverflowMenu(it)
+        }
     }
 
     private fun putReview() {
@@ -304,6 +314,25 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
         val json = JSONObject()
         json.put("content", rate)
         json.put("id_parent", content)
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toString()
+        )
+    }
+
+    private fun createRequestBodyForPostMyBook(id: Int) = run {
+        val json = JSONObject()
+        json.put("iD_Book", id)
+        RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toString()
+        )
+    }
+
+    private fun createRequestBodyForPutMyBook(id: Int, status: Int) = run {
+        val json = JSONObject()
+        json.put("iD_Book", id)
+        json.put("status", status)
         RequestBody.create(
             okhttp3.MediaType.parse("application/json; charset=utf-8"),
             json.toString()
@@ -479,6 +508,276 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
                 binding.llEditReply.visibility = View.GONE
             }
         }
+    }
+
+    private fun showOverflowMenu(anchor: View) {
+        val menu = PopupMenu(this, anchor)
+        menu.menu.apply {
+            add(UN_READ).setOnMenuItemClickListener {
+                binding.tvBookState.text = UN_READ
+                changeBookState(0)
+                true
+            }
+            add(WANT_TO_READ).setOnMenuItemClickListener {
+                binding.tvBookState.text = WANT_TO_READ
+                changeBookState(1)
+                true
+            }
+            add(CURRENTLY_READING).setOnMenuItemClickListener {
+                binding.tvBookState.text = CURRENTLY_READING
+                changeBookState(2)
+                true
+            }
+            add(READ).setOnMenuItemClickListener {
+                binding.tvBookState.text = READ
+                changeBookState(3)
+                true
+            }
+        }
+        menu.show()
+    }
+
+    private fun changeBookState(newState: Int) {
+        if (bookState == newState) {
+            return
+        }
+        if (bookState == 0) {
+            postMyBook()
+            if (newState == 1) {
+                return
+            }
+        }
+        when (newState) {
+            0 -> {
+                deleteFromMyBook()
+            }
+            1 -> {
+                putBookState(1)
+            }
+            2 -> {
+                putBookState(2)
+            }
+            else -> {
+                putBookState(3)
+            }
+        }
+    }
+
+    private fun showBookState(myBooks: ArrayList<MyBookState>) {
+        myBooks.forEach {
+            if (it.book?.id == bookId) {
+                binding.apply {
+                    when (it.statusBook) {
+                        1 -> {
+                            bookState = 1
+                            tvBookState.text = WANT_TO_READ
+                        }
+                        2 -> {
+                            bookState = 2
+                            tvBookState.text = CURRENTLY_READING
+                        }
+                        3 -> {
+                            bookState = 3
+                            tvBookState.text = READ
+                        }
+                        else -> {
+                            bookState = 0
+                            tvBookState.text = UN_READ
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getMyBook() {
+        apiAuthorized.getMyBook().enqueue(object : Callback<ArrayList<MyBookState>> {
+            override fun onResponse(call: Call<ArrayList<MyBookState>>, response: Response<ArrayList<MyBookState>>) {
+                when {
+                    response.code() == 400 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Bad request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        response.body()?.let {
+                            showBookState(it)
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<MyBookState>>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    private fun postMyBook() {
+        apiAuthorized.postMyBook(createRequestBodyForPostMyBook(bookId)).enqueue(object : Callback<MyBookState> {
+            override fun onResponse(call: Call<MyBookState>, response: Response<MyBookState>) {
+                when {
+                    response.code() == 400 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Bad request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        if (bookState == 0) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Added to my book",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "Change book state",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MyBookState>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    private fun putBookState(state: Int) {
+        apiAuthorized.putMyBook(createRequestBodyForPutMyBook(bookId, state)).enqueue(object : Callback<MyBookState> {
+            override fun onResponse(call: Call<MyBookState>, response: Response<MyBookState>) {
+                when {
+                    response.code() == 400 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Bad request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        if (bookState != 0) {
+                            Toast.makeText(
+                                applicationContext,
+                                "Change book state",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        bookState = state
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MyBookState>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    private fun deleteFromMyBook() {
+        apiAuthorized.deleteMyBookById(bookId).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                when {
+                    response.code() == 400 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Bad request",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        Toast.makeText(
+                            applicationContext,
+                            "Remove from my book",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        bookState = 0
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Toast.makeText(
+                    applicationContext,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     override fun onDeleteReply(id: Int, idParent: Int) {

@@ -191,11 +191,19 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
             binding.apply {
                 when {
                     edtTitle.text.toString() == "" -> {
-                        Toast.makeText(requireContext(), "Book name cannot empty!", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            "Book name cannot empty!",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                     tvPublishDate.text.toString() == "" -> {
-                        Toast.makeText(requireContext(), "Publish year cannot empty!", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            "Publish year cannot empty!",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                     else -> {
@@ -483,8 +491,8 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
         }
         val listRequestTagIdJsonArray = JSONArray(listRequestTagId)
         json.put("list_ID_Tags", listRequestTagIdJsonArray)
-        val listRequestNewTagJsonArray = JSONArray(listRequestNewTag)
-        json.put("list_new_tags", listRequestNewTagJsonArray)
+//        val listRequestNewTagJsonArray = JSONArray(listRequestNewTag)
+//        json.put("list_new_tags", listRequestNewTagJsonArray)
         Log.e("object", json.toString())
         RequestBody.create(
             okhttp3.MediaType.parse("application/json; charset=utf-8"),
@@ -492,7 +500,7 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
         )
     }
 
-    private fun encodeImageToBase64String(bm: Bitmap): String? {
+    private fun encodeImageToBase64String(bm: Bitmap): String {
         val baos = ByteArrayOutputStream()
         bm.compress(Bitmap.CompressFormat.JPEG, 50, baos)
         val byteArray = baos.toByteArray()

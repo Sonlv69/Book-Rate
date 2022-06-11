@@ -4,5 +4,5 @@ import android.view.View
 
 interface BookPreviewAdapterInterface {
     fun onItemViewClick(pos : Int)
-    fun onBookStateClick(pos : Int, view: View)
+    fun onBookStateClick(pos : Int, view: View, bookState: Int)
 }

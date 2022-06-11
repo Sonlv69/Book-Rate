@@ -17,6 +17,7 @@
     <string name="textview_text_signout">Sign out</string>
     <string name="sherlock_text_title">Sherlock</string>
     <string name="your_bookshelves_is_empty">Your bookshelves is empty.</string>
+    <string name="finding_your_list">Finding your list..</string>
     <string name="saved_login_account_key">Access token key</string>
     <string name="is_sign_in_key">Is sign in key</string>
     <string name="permission_denied">Permission Denied</string>

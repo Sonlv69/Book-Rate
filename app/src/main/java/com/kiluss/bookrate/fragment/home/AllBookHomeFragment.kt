@@ -143,36 +143,8 @@ class AllBookHomeFragment : Fragment(), BookPreviewAdapterInterface {
         startActivity(intent)
     }
 
-    override fun onBookStateClick(pos: Int, view: View) {
-        showOverflowMenu(pos, view)
-    }
-
-    private fun showOverflowMenu(pos: Int, anchor: View) {
-        val menu = PopupMenu(requireContext(), anchor)
-        menu.menu.apply {
-            add("None").setOnMenuItemClickListener {
-                //bookLists[pos].state = "None"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-            add("Read").setOnMenuItemClickListener {
-                //bookLists[pos].state = "Read"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-            add("Currently Reading").setOnMenuItemClickListener {
-                //bookLists[pos].state = "Currently Reading"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-
-            add("Want To Read").setOnMenuItemClickListener {
-                //bookLists[pos].state = "Want To Read"
-                bookAdapter.notifyItemChanged(pos)
-                true
-            }
-        }
-        menu.show()
+    override fun onBookStateClick(pos: Int, view: View, bookState: Int) {
+//        showOverflowMenu(pos, view)
     }
 
     override fun onDestroyView() {

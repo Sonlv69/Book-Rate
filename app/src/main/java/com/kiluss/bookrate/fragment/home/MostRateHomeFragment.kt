@@ -46,7 +46,7 @@ class MostRateHomeFragment : Fragment(), BookPreviewAdapterInterface {
         startActivity(intent)
     }
 
-    override fun onBookStateClick(pos: Int, view: View) {
+    override fun onBookStateClick(pos: Int, view: View, bookState: Int) {
         showOverflowMenu(pos, view)
     }
 

@@ -21,11 +21,11 @@
         android:name="com.kiluss.bookrate.fragment.BookRequestFragment"
         android:label="fragment_book_request"
         tools:layout="@layout/fragment_book_request" />
-    <fragment
-        android:id="@+id/accountFollowingFragment"
-        android:name="com.kiluss.bookrate.fragment.AccountFollowingFragment"
-        android:label="fragment_account_following"
-        tools:layout="@layout/fragment_account_following" />
+<!--    <fragment-->
+<!--        android:id="@+id/accountFollowingFragment"-->
+<!--        android:name="com.kiluss.bookrate.fragment.AccountFollowingFragment"-->
+<!--        android:label="fragment_account_following"-->
+<!--        tools:layout="@layout/fragment_account_following" />-->
     <fragment
         android:id="@+id/personalFragment"
         android:name="com.kiluss.bookrate.fragment.PersonalFragment"

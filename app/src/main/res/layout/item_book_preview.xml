@@ -11,8 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="4dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -85,16 +85,16 @@
             android:id="@+id/ivBookPreview"
             android:layout_width="150dp"
             android:layout_height="200dp"
+            android:layout_margin="5dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/book_cover_default"
-            android:layout_margin="5dp" />
+            android:src="@drawable/book_cover_default" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llBookState"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_bg">
+            android:background="@drawable/button_bg"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tvBookState"
@@ -102,23 +102,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:gravity="center_horizontal"
-                android:textStyle="bold"
                 android:text="Want to read"
-                android:textSize="@dimen/textview_text_normal_size" />
+                android:textSize="@dimen/textview_text_normal_size"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_drop_down"
-                />
+                android:src="@drawable/ic_arrow_drop_down" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginTop="4dp"
+            android:id="@+id/llPublishTime"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
 
             <ImageView
+                android:id="@+id/ivPublishTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"

@@ -145,4 +145,14 @@ interface BookService {
     fun deleteMyBookById(
         @Path("id") id: Int
     ): Call<Unit>
+
+    //Statistical
+    @GET("Statistical/Review/10")
+    fun getStatisticalReview(): Call<ArrayList<TopReview>>
+
+    @GET("Statistical/Rate/10")
+    fun getStatisticalRate(): Call<ArrayList<TopRateAvg>>
+
+    @GET("Statistical/Readed/10")
+    fun getStatisticalRead(): Call<ArrayList<TopRead>>
 }

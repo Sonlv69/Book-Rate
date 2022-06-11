@@ -28,30 +28,6 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/llCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_margin="4dp"
-                android:background="@drawable/button_bg">
-
-                <TextView
-                    android:id="@+id/tvStageNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center_horizontal"
-                    android:text="Category"
-                    android:textSize="@dimen/textview_text_normal_size"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_drop_down" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llBookState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,6 +41,29 @@
                     android:layout_marginStart="12dp"
                     android:gravity="center_horizontal"
                     android:text="State"
+                    android:textSize="@dimen/textview_text_normal_size"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_drop_down" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llAllCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/button_bg">
+
+                <TextView
+                    android:id="@+id/tvAllCategoryNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_horizontal"
+                    android:text="All category"
                     android:textSize="@dimen/textview_text_normal_size"
                     android:textStyle="bold" />
 

@@ -5,11 +5,10 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MyBook(
+data class MyTags(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("iD_Acc") var iDAcc: Int? = null,
-    @SerializedName("iD_Book") var iDBook: Int? = null,
-    @SerializedName("acc") var acc: Account? = Account(),
-    @SerializedName("book") var book: BookModel? = null,
-    @SerializedName("status") var status: Boolean? = null
+    @SerializedName("iD_Tag") var iDTag: Int? = null,
+    @SerializedName("account") var account: String? = null,
+    @SerializedName("tag") var tag: Tag? = Tag()
 ): Parcelable

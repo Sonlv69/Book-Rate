@@ -48,7 +48,7 @@ class ReplyReviewAdapter(
             binding.apply {
                 tvCommentName.text = reply.account?.userName.toString()
                 tvComment.text = reply.content.toString()
-                if (reply.account?.picture.toString() != "") {
+                if (reply.account?.picture.toString() != "" && reply.account?.picture != null) {
                     ivCommentAvatar.setImageBitmap(base64ToBitmapDecode(reply.account?.picture.toString()))
                 }
                 if (id == reply.iDAcc) {

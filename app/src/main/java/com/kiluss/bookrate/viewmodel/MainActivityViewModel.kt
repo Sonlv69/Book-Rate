@@ -38,6 +38,9 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     internal val accountInfo: LiveData<Account> = _accountInfo
     private val _loginResponse: MutableLiveData<LoginResponse> by lazy { MutableLiveData<LoginResponse>() }
     internal val loginResponse: LiveData<LoginResponse> = _loginResponse
+    private val _reloadTagData: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    internal val reloadTagData: LiveData<Boolean> = _reloadTagData
+
     private var bookNumber: Int = 0
     private lateinit var apiAuthorized: BookService
 
@@ -58,6 +61,10 @@ class MainActivityViewModel(context: Context) : ViewModel() {
         } else {
             navBottomView.removeBadge(R.id.myBookFragment)
         }
+    }
+
+    internal fun reloadTagData() {
+        _reloadTagData.postValue(true)
     }
 
     internal fun base64ToBitmapDecode(base64Image: String): Bitmap? {

@@ -42,14 +42,6 @@ class PersonalDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.svMain.visibility = View.INVISIBLE
         setUpApi()
-
-        binding.tvFollowing.setOnClickListener {
-            addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList as ArrayList<FollowModel>),
-                UserFollowFragment().toString()
-            )
-            supportActionBar?.title = FOLLOWING
-        }
     }
 
     private fun setUpApi() {
@@ -108,14 +100,14 @@ class PersonalDetailActivity : AppCompatActivity() {
         account.myFollowings?.let { followingList = it}
         binding.tvFollowed.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList),
+                UserFollowFragment.newInstance(followerList, true),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWER
         }
         binding.tvFollowing.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followingList),
+                UserFollowFragment.newInstance(followingList, false),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWING

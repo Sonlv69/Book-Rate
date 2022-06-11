@@ -47,14 +47,6 @@ class UserDetailActivity : AppCompatActivity() {
         api = RetrofitClient.getInstance(this).getClientAuthorized(loginResponse.token.toString())
             .create(BookService::class.java)
         getAccountInfo(accountId)
-
-        binding.tvFollowing.setOnClickListener {
-            addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList),
-                UserFollowFragment().toString()
-            )
-            supportActionBar?.title = FOLLOWING
-        }
     }
 
     private fun getAccountInfo(accountId: Int) {
@@ -103,14 +95,14 @@ class UserDetailActivity : AppCompatActivity() {
         account.myFollowings?.let { followingList = it}
         binding.tvFollowed.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList),
+                UserFollowFragment.newInstance(followerList, true),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWER
         }
         binding.tvFollowing.setOnClickListener {
             addFragmentToActivity(
-                UserFollowFragment.newInstance(followingList),
+                UserFollowFragment.newInstance(followingList, false),
                 UserFollowFragment().toString()
             )
             supportActionBar?.title = FOLLOWING

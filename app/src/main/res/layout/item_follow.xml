@@ -20,7 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Le Son"
         android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"
@@ -30,8 +29,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="12k Followers"
-        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"
         app:layout_constraintTop_toBottomOf="@id/tvName"
         app:layout_constraintBottom_toBottomOf="parent"/>

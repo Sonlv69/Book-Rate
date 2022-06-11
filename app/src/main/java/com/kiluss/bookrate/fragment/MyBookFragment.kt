@@ -495,7 +495,7 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         super.onResume()
         if (::bookAdapter.isInitialized) {
             queryBookList(myQuery)
-        } else {
+        } else if (_binding != null) {
             getMyBook()
         }
     }

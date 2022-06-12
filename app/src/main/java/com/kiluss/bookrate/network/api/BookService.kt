@@ -159,6 +159,11 @@ interface BookService {
         @Path("id") id: Int
     ): Call<Unit>
 
+    @POST("User/Search")
+    fun searchBook(
+        @Body params: RequestBody
+    ): Call<ArrayList<BookModel>>
+
     //Statistical
     @GET("Statistical/Review/10")
     fun getStatisticalReview(): Call<ArrayList<TopReview>>

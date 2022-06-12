@@ -1,6 +1,7 @@
 package com.kiluss.bookrate.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -22,6 +23,7 @@ import com.kiluss.bookrate.data.model.MyBookState
 import com.kiluss.bookrate.databinding.ActivityMainBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
+import com.kiluss.bookrate.utils.Constants
 import com.kiluss.bookrate.viewmodel.MainActivityViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -77,6 +79,10 @@ class MainActivity : AppCompatActivity() {
         // search queryTextChange Listener
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                val intent = Intent(this@MainActivity, AllBookSearchActivity::class.java).apply {
+                    putExtra(Constants.EXTRA_MESSAGE, p0)
+                }
+                startActivity(intent)
                 return true
             }
 

@@ -53,10 +53,10 @@ class MainActivityViewModel(context: Context) : ViewModel() {
         val navBottomView = (context as AppCompatActivity).findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val badgeDrawable: BadgeDrawable? = navBottomView.getBadge(R.id.myBookFragment)
         if (badgeDrawable == null) {
-            if (bookNumber != 0) {
+            if (numberNotify != 0) {
                 navBottomView.getOrCreateBadge(R.id.myBookFragment).number = numberNotify
             }
-        } else if (bookNumber != 0){
+        } else if (numberNotify != 0){
             badgeDrawable.number = numberNotify
         } else {
             navBottomView.removeBadge(R.id.myBookFragment)

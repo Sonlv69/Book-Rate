@@ -94,18 +94,22 @@ class UserDetailActivity : AppCompatActivity() {
         account.myFollowers?.let { followerList = it }
         account.myFollowings?.let { followingList = it}
         binding.tvFollowed.setOnClickListener {
-            addFragmentToActivity(
-                UserFollowFragment.newInstance(followerList, true),
-                UserFollowFragment().toString()
-            )
-            supportActionBar?.title = FOLLOWER
+            if (followerList.isNotEmpty()) {
+                addFragmentToActivity(
+                    UserFollowFragment.newInstance(followerList, true),
+                    UserFollowFragment().toString()
+                )
+                supportActionBar?.title = FOLLOWER
+            }
         }
         binding.tvFollowing.setOnClickListener {
-            addFragmentToActivity(
-                UserFollowFragment.newInstance(followingList, false),
-                UserFollowFragment().toString()
-            )
-            supportActionBar?.title = FOLLOWING
+            if (followingList.isNotEmpty()) {
+                addFragmentToActivity(
+                    UserFollowFragment.newInstance(followingList, false),
+                    UserFollowFragment().toString()
+                )
+                supportActionBar?.title = FOLLOWING
+            }
         }
         if (followState) {
             binding.btnFollow.text = "Unfollow"

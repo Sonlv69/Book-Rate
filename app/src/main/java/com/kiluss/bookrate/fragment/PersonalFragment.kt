@@ -57,6 +57,14 @@ class PersonalFragment : Fragment() {
             )
         }
 
+        binding.swNotification.setOnCheckedChangeListener { _, _ ->
+            if (binding.swNotification.isChecked) {
+                activityViewModel.getMyBookSize(requireContext())
+            } else {
+                activityViewModel.setNotification(requireContext(), 0)
+            }
+        }
+
         binding.darkModeSwitch.setOnCheckedChangeListener { _, _ ->
             val checkedItem = binding.darkModeSwitch.isChecked
             if (checkedItem) {

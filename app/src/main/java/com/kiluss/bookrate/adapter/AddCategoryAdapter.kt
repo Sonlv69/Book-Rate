@@ -49,12 +49,16 @@ class AddCategoryAdapter(
                     myCategories.add(MyTags(null, null, category.id))
                 } else {
                     categoryNameAdapterInterface.onDeleteMyTagClick(adapterPosition, category.id)
+                    val newList = arrayListOf<MyTags>()
+                    newList.addAll(myCategories)
                     myCategories.forEach {
                         if (it.iDTag == category.id) {
-                            myCategories.remove(it)
+                            newList.remove(it)
                             return@forEach
                         }
                     }
+                    myCategories.clear()
+                    myCategories.addAll(newList)
                 }
             }
             myCategories.forEach {

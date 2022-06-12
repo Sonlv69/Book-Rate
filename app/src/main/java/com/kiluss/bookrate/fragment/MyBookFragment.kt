@@ -55,6 +55,7 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
             val intent = Intent(this.requireContext(), MyBookSearchActivity::class.java)
             startActivity(intent)
         }
+        setUpCategoryLayout()
         bookLists = mutableListOf()
         getMyBook()
         getCategory()
@@ -326,7 +327,6 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
         binding.rcvMyBook.layoutManager = GridLayoutManager(context, 2)
         bookAdapter = MyBookPreviewAdapter(bookLists, this.requireContext(), this)
         binding.rcvMyBook.adapter = bookAdapter
-        setUpCategoryLayout()
     }
 
     private fun shouldShowEmptyBookString() {

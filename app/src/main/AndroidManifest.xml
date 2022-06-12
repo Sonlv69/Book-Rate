@@ -19,6 +19,9 @@
         android:theme="@style/Theme.BookRate"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.AllBookSearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.UserDetailActivity"
             android:exported="false" />
         <activity

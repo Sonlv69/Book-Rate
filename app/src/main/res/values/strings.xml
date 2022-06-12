@@ -25,5 +25,6 @@
     <string name="text_follower">{0,choice,0#No follower|1#1 follower|1&lt;{0} followers}</string>
     <string name="by_author_text">By <u><i>%s</i></u></string>
     <string name="publish_by_text">Publish by <u><i>%s</i></u></string>
+    <string name="hmm_seem_to_be_nothing_like_this">Hmm.. seem to be nothing like this</string>
 
 </resources>

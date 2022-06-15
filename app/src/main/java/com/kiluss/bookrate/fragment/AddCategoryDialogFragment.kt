@@ -57,7 +57,7 @@ class AddCategoryDialogFragment() : DialogFragment(), AddCategoryAdapter.Categor
     private fun setupView() {
         categoryNameAdapter = AddCategoryAdapter(allCategory, myCategory, this)
         recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = categoryNameAdapter
     }
 

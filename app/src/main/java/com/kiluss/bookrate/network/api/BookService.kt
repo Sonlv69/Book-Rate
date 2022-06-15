@@ -34,7 +34,7 @@ interface BookService {
     fun changePassword(
         @Path("id") id: String,
         @Body params: RequestBody
-    ): Call<Account>
+    ): Call<Void>
 
     @POST("Account/Follow")
     fun postFollow(

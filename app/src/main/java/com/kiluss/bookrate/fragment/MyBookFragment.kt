@@ -234,10 +234,12 @@ class MyBookFragment : Fragment(), BookPreviewAdapterInterface {
                             }
                             bookState = state
                             bookLists[pos].statusBook = state
-                            if (bookLists[pos].statusBook != 0 && bookLists[pos].statusBook != myQuery) {
+                            if (bookLists[pos].statusBook != 0 && bookLists[pos].statusBook != myQuery && myQuery != 0) {
                                 bookLists.removeAt(pos)
+                                bookAdapter.notifyItemRemoved(pos)
+                            } else {
+                                bookAdapter.notifyItemChanged(pos)
                             }
-                            bookAdapter.notifyItemChanged(pos)
                         }
                     }
                 }

@@ -1,14 +1,13 @@
 package com.kiluss.bookrate.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.kiluss.bookrate.R
 import com.kiluss.bookrate.data.model.LoginResponse
-import com.kiluss.bookrate.data.model.Account
 import com.kiluss.bookrate.databinding.ActivityChangePasswordBinding
 import com.kiluss.bookrate.network.api.BookService
 import com.kiluss.bookrate.network.api.RetrofitClient
@@ -26,9 +25,14 @@ class ChangePasswordActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.title = "Change password"
 
-        binding.btnSubmit.setOnClickListener{
+        binding.btnSubmit.setOnClickListener {
             if (binding.edtNewPassword.text.toString() == binding.edtConfirmNewPassword.text.toString()) {
                 uploadChange()
+            } else if (binding.edtCurrentPassword.text.toString() == "" &&
+                binding.edtNewPassword.text.toString() == "" &&
+                binding.edtConfirmNewPassword.text.toString() == ""
+            ) {
+                Toast.makeText(this, "Please fill all field", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Confirm password not match", Toast.LENGTH_SHORT).show()
             }
@@ -54,10 +58,10 @@ class ChangePasswordActivity : AppCompatActivity() {
                     createJsonObject().toString()
                 )
             )
-            .enqueue(object : Callback<Account?> {
+            .enqueue(object : Callback<Void> {
                 override fun onResponse(
-                    call: Call<Account?>,
-                    response: Response<Account?>
+                    call: Call<Void>,
+                    response: Response<Void>
                 ) {
                     when {
                         response.code() == 404 -> {
@@ -76,13 +80,17 @@ class ChangePasswordActivity : AppCompatActivity() {
                         }
                         response.isSuccessful -> {
                             Log.e("TAG", response.body().toString())
-                            Toast.makeText(applicationContext, "Change password successfully!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Change password successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             finish()
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<Account?>, t: Throwable) {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
                     Log.e("TAG", t.stackTraceToString())
                     Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
                 }
@@ -94,6 +102,5 @@ class ChangePasswordActivity : AppCompatActivity() {
         json.put("currentPassword", binding.edtCurrentPassword.text)
         json.put("newPassword", binding.edtNewPassword.text)
         return json
-
     }
 }

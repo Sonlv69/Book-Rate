@@ -206,6 +206,30 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                         )
                             .show()
                     }
+                    tvAuthor.text.toString() == "Author" || tvAuthor.text.toString() == "" -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Author cannot empty!",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    tvPublisher.text.toString() == "Publisher" || tvPublisher.text.toString() == "" -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Publisher cannot empty!",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    listCategory.size == 0 -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Category cannot empty!",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                     else -> {
                         apiAuthorized.postRequestBook(createRequestBodyForBookRequest())
                             .enqueue(object : Callback<BookRequest?> {
@@ -246,6 +270,18 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                                             }
                                         }
                                     }
+                                    binding.apply {
+                                        edtTitle.setText("")
+                                        edtAuthor.setText("")
+                                        edtDescription.setText("")
+                                        edtPublisher.setText("")
+                                        tvPublishDate.text = ""
+                                        tvAuthor.text = ""
+                                        tvPublisher.text = ""
+                                        ivCoverPicked.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.book_cover_default))
+                                        resetListCategory()
+                                        edtTitle.requestFocus()
+                                    }
                                 }
 
                                 override fun onFailure(call: Call<BookRequest?>, t: Throwable) {
@@ -272,7 +308,7 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
 
         binding.edtDescription.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                requestBookName = edtDescription.text.toString()
+                requestDescription = edtDescription.text.toString()
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -350,6 +386,7 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                             listAllTag.forEach {
                                 it.name?.let { it1 -> listCategoryDefine.add(it1) }
                             }
+                            listCategoryDefine.sort()
                         }
                     }
                 }
@@ -555,6 +592,8 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                             it.id?.let { it1 -> requestAuthorId = it1 }
                         }
                     }
+                    binding.edtAuthor.setText("")
+                    binding.edtAuthor.clearFocus()
                     binding.tvAuthor.text = author
                     true
                 }
@@ -573,6 +612,8 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                             it.id?.let { it1 -> requestPublisherId = it1 }
                         }
                     }
+                    binding.edtPublisher.setText("")
+                    binding.edtPublisher.clearFocus()
                     binding.tvPublisher.text = pub
                     true
                 }
@@ -583,6 +624,52 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
 
     private fun getFileImageBitmap(imgFile: File): Bitmap {
         return BitmapFactory.decodeFile(imgFile.absolutePath)
+    }
+
+    private fun resetListCategory() {
+        apiAuthorized.getAllTag().enqueue(object : Callback<ArrayList<Tag>?> {
+            override fun onResponse(
+                call: Call<ArrayList<Tag>?>,
+                response: Response<ArrayList<Tag>?>
+            ) {
+                when {
+                    response.code() == 404 -> {
+                        Toast.makeText(
+                            context,
+                            "Url is not exist",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.code() == 500 -> {
+                        Toast.makeText(
+                            context,
+                            "Internal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    response.isSuccessful -> {
+                        response.body()?.let {
+                            listAllTag = response.body()!!
+                            listCategoryDefine.clear()
+                            listAllTag.forEach {
+                                it.name?.let { it1 -> listCategoryDefine.add(it1) }
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Tag>?>, t: Throwable) {
+                Toast.makeText(
+                    context,
+                    t.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+        listCategory.clear()
+        listCategoryDefine.sort()
+        categoryRequestAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

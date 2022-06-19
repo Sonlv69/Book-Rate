@@ -71,13 +71,14 @@ class AllBookSearchActivity : AppCompatActivity(), BookPreviewAdapterInterface {
                             }
                             response.isSuccessful -> {
                                 response.body()?.let {
-                                    bookLists.clear()
-                                    bookLists.addAll(it)
-                                    initView()
                                     if (it.isEmpty()) {
                                         binding.tvEmptyResult.text = getString(R.string.hmm_seem_to_be_nothing_like_this)
-                                    } else
+                                    } else {
                                         binding.tvEmptyResult.visibility = View.GONE
+                                        bookLists.clear()
+                                        bookLists.addAll(it)
+                                        initView()
+                                    }
                                 }
                             }
                         }
@@ -92,10 +93,13 @@ class AllBookSearchActivity : AppCompatActivity(), BookPreviewAdapterInterface {
     }
 
     private fun createRequestBodyForBookRequest(query: String) = run {
-
         val json = Gson()
         json.toJson(query)
         Log.e("search json", json.toJson(query).toString())
+        Log.e("request body", RequestBody.create(
+            okhttp3.MediaType.parse("application/json; charset=utf-8"),
+            json.toJson(query).toString()
+        ).toString())
         RequestBody.create(
             okhttp3.MediaType.parse("application/json; charset=utf-8"),
             json.toJson(query).toString()

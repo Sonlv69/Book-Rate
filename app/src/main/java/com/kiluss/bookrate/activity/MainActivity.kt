@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -79,8 +80,10 @@ class MainActivity : AppCompatActivity() {
         // search queryTextChange Listener
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                val searchText = p0?.trim()?.lowercase()
+                Log.e("seach in main", searchText.toString())
                 val intent = Intent(this@MainActivity, AllBookSearchActivity::class.java).apply {
-                    putExtra(Constants.EXTRA_MESSAGE, p0)
+                    putExtra(Constants.EXTRA_MESSAGE, searchText)
                 }
                 startActivity(intent)
                 return true

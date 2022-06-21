@@ -127,7 +127,7 @@ class BookDetailActivity : AppCompatActivity(), ReviewAdapter.CommentAdapterAdap
             binding.ivCover.setImageBitmap(base64ToBitmapDecode(book.picture.toString()))
         }
         val authorString =
-            SpannableString(getString(R.string.by_author_text, book.author?.name.toString()))
+            SpannableString(getString(R.string.by_author_text, book.author?.stageName.toString()))
         authorString.setSpan(StyleSpan(Typeface.ITALIC), 0, authorString.length, 0)
         binding.tvAuthor.text = authorString
 

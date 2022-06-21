@@ -433,9 +433,8 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                         response.body()?.let {
                             listAllAuthor = response.body()!!
                             listAllAuthor.forEach {
-                                it.name?.let { it1 -> listAllAuthorName.add(it1) }
+                                it.stageName?.let { it1 -> listAllAuthorName.add(it1) }
                             }
-                            Log.e("author", response.body().toString())
                         }
                     }
                 }
@@ -495,12 +494,14 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
     private fun createRequestBodyForBookRequest() = run {
         val json = JSONObject()
         json.put("bookName", requestBookName)
-        if (requestNewAuthor != null) {
+        Log.e("author", requestAuthorId.toString())
+        Log.e("newAuthor", requestNewAuthor.toString())
+        if (requestNewAuthor != "") {
             json.put("iD_Aut", JSONObject.NULL)
         } else {
             json.put("iD_Aut", requestAuthorId)
         }
-        if (requestNewPublisher == null) {
+        if (requestNewPublisher != "") {
             json.put("iD_Pub", JSONObject.NULL)
         } else {
             json.put("iD_Pub", requestPublisherId)
@@ -520,12 +521,12 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
         } else {
             json.put("description", requestDescription)
         }
-        if (requestNewAuthor == null) {
+        if (requestNewAuthor == "") {
             json.put("newAut", "")
         } else {
             json.put("newAut", requestNewAuthor)
         }
-        if (requestNewPublisher == null) {
+        if (requestNewPublisher == "") {
             json.put("newPub", "")
         } else {
             json.put("newPub", requestNewPublisher)
@@ -587,13 +588,13 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
         menu.menu.apply {
             for (author in list) {
                 add(author).setOnMenuItemClickListener {
+                    binding.edtAuthor.setText("")
+                    binding.edtAuthor.clearFocus()
                     listAllAuthor.forEach {
-                        if (author == it.name) {
+                        if (author == it.stageName) {
                             it.id?.let { it1 -> requestAuthorId = it1 }
                         }
                     }
-                    binding.edtAuthor.setText("")
-                    binding.edtAuthor.clearFocus()
                     binding.tvAuthor.text = author
                     true
                 }
@@ -607,13 +608,13 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
         menu.menu.apply {
             for (pub in list) {
                 add(pub).setOnMenuItemClickListener {
+                    binding.edtPublisher.setText("")
+                    binding.edtPublisher.clearFocus()
                     listAllPublisher.forEach {
                         if (pub == it.name) {
                             it.id?.let { it1 -> requestPublisherId = it1 }
                         }
                     }
-                    binding.edtPublisher.setText("")
-                    binding.edtPublisher.clearFocus()
                     binding.tvPublisher.text = pub
                     true
                 }

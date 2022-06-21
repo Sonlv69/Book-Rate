@@ -64,7 +64,7 @@ class MyBookPreviewAdapter(
                     }
                 }
                 if (author != null) {
-                    binding.tvAuthor.text = author!!.name.toString()
+                    binding.tvAuthor.text = author!!.stageName.toString()
                 } else {
                     binding.llAuthor.visibility = View.INVISIBLE
                 }

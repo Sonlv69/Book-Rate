@@ -41,7 +41,7 @@ class BookPreviewLoadMoreAdapter(
                 binding.ivBookPreview.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.cover_not_available))
             }
             if (bookModel.author != null) {
-                binding.tvAuthor.text = bookModel.author!!.name.toString()
+                binding.tvAuthor.text = bookModel.author!!.stageName.toString()
             } else {
                 binding.llAuthor.visibility = View.INVISIBLE
             }

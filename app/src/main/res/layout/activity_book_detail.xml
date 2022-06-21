@@ -281,19 +281,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tvReviewLabel"
                 app:layout_constraintVertical_bias="0" />
 
-            <ImageView
-                android:id="@+id/ivSendReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_send"
-                app:layout_constraintBottom_toBottomOf="@id/edtReview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/edtReview"
-                app:layout_constraintTop_toTopOf="@id/edtReview"
-                app:tint="@color/colorPrimaryDarker" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvComment"
                 android:layout_width="match_parent"

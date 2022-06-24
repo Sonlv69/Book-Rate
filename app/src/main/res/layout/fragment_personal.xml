@@ -35,7 +35,7 @@
                 style="@style/viewParent.headerText"
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@id/profileCircleImageView"
-                android:text="Le Son"
+                android:text="Username"
                 android:textSize="18sp" />
 
             <TextView

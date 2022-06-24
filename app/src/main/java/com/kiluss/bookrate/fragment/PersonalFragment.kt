@@ -4,6 +4,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,18 +36,21 @@ class PersonalFragment : Fragment() {
         binding.darkModeSwitch.isChecked = sharedPreferences.getBoolean(NIGHT_MODE, false)
         val account = activityViewModel.accountInfo.value
         if (account != null) {
-            binding.profileCircleImageView.setImageBitmap(account.picture?.let {
-                activityViewModel.base64ToBitmapDecode(it)
-            })
+            if (account.picture != "" && account.picture != null) {
+                binding.profileCircleImageView.setImageBitmap(account.picture?.let {
+                    activityViewModel.base64ToBitmapDecode(it)
+                })
+            }
         }
         activityViewModel.accountInfo.observe(requireActivity()) {
-            if (it.picture != "") {
+            if (it.picture != "" && it.picture != null) {
                 binding.profileCircleImageView.setImageBitmap(
                     activityViewModel.base64ToBitmapDecode(
                         it.picture.toString()
                     )
                 )
             }
+            binding.usernameTextView.text = it.userName.toString()
         }
         binding.rlPersonalDetail.setOnClickListener {
             requireActivity().startActivity(

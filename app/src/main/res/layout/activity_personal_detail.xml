@@ -34,7 +34,7 @@
                 android:focusable="true"
                 android:padding="20dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user_dp"
+                android:src="@drawable/user_df_avatar"
                 app:civ_border_color="#FFFFFFFF"
                 app:civ_border_width="3dp">
 

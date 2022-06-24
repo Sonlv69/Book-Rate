@@ -278,7 +278,12 @@ class BookRequestFragment : Fragment(), ListRequestAdapter.ListRequestAdapterInt
                                         tvPublishDate.text = ""
                                         tvAuthor.text = ""
                                         tvPublisher.text = ""
-                                        ivCoverPicked.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.book_cover_default))
+                                        ivCoverPicked.setImageDrawable(
+                                            ContextCompat.getDrawable(
+                                                requireContext(),
+                                                R.drawable.book_cover_default
+                                            )
+                                        )
                                         resetListCategory()
                                         edtTitle.requestFocus()
                                     }
